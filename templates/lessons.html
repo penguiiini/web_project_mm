@@ -1,0 +1,17 @@
+{% extends "main_window.html" %}
+
+{% block lessons %}
+<header>
+    <nav class="navbar navbar-light bg-warning">
+        <a class="navbar-brand" href="#">Уроки</a>
+    </nav>
+</header>
+<form action="" method="get" novalidate>
+    {{ form.hidden_tag() }}
+    <p>{{ form.lesson1(type="submit", class="btn btn-light") }}</p>
+    <p>{{ form.lesson2(type="submit", class="btn btn-light") }}</p>
+    <p>{{ form.lesson3(type="submit", class="btn btn-light") }}</p>
+    <p>{{ form.lesson4(type="submit", class="btn btn-light") }}</p>
+    <p>{{ form.lesson5(type="submit", class="btn btn-light") }}</p>
+</form>
+{% endblock %}
