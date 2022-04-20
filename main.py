@@ -1,5 +1,5 @@
 import os
-
+import io
 from flask import Flask, render_template, url_for, request, redirect
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, EmailField, SubmitField, BooleanField, Label
@@ -10,6 +10,7 @@ import sqlalchemy.orm as orm
 from sqlalchemy.orm import Session
 import sqlalchemy.ext.declarative as dec
 import sqlite3
+import sys
 
 SqlAlchemyBase = dec.declarative_base()
 
@@ -22,6 +23,9 @@ con = sqlite3.connect('data/FlaskProject.db', check_same_thread=False)
 cur = con.cursor()
 
 memory = False
+lesson = 1
+num = 1
+
 
 
 class Registraiton(FlaskForm):
@@ -52,10 +56,57 @@ class Lessons(FlaskForm):
     lesson5 = SubmitField('Урок - 5: тема')
 
 
+class Lesson1(FlaskForm):
+    answer = StringField('Введите решение', validators=[DataRequired("Это поле обязательно!")])
+    send = SubmitField('Отправить')
+
+
 def registration1(login, password, email):
     input = [(login, email, password)]
     cur.executemany('INSERT INTO Users(login, email, password) VALUES(?,?,?)', input)
     con.commit()
+
+
+def test():
+    old_stdout = sys.stdout
+    old_stderr = sys.stderr
+    redirected_output = sys.stdout = io.StringIO()
+
+    out, exc = None, None
+
+    try:
+
+        exec(open('test.py').read())
+
+    except:
+
+        import traceback
+        exc = traceback.format_exc()
+
+    out = redirected_output.getvalue()
+    sys.stdout = old_stdout
+    sys.stderr = old_stderr
+    return out, exc
+
+
+def check(right_answer):
+
+    out, exc = test()
+    print(out, exc)
+    if len(out.strip()) == 0:
+        output = exc
+    else:
+        output = out.strip().split('\n')
+    if output == right_answer:
+        return True, ''
+    else:
+        if exc is None:
+            er = f'Fail on test number 1:\nExcepted: {right_answer}\nReceived: {output}'
+            er.split('/n')
+        else:
+            er = exc
+            er.split('/n')
+        return False, er
 
 
 @app.route('/registration', methods=['GET', 'POST'])
@@ -84,23 +135,51 @@ def authorization():
                 memory = True
             try:
                 pas = cur.execute(f'''SELECT password FROM Users WHERE login="{username}"''')
-                if pas != password:
-                    form = Authorization(pas=False)
             except sqlite3.Error:
-                form = Authorization(log=False)
+                pass
+            if form.remember_me.data:
+                memory = True
+            else:
+                memory = False
             return redirect("/lessons")
         if form.reg.data:
             return redirect("/registration")
     return render_template('authorization.html', title='Авторизация', form=form)
 
 
-@app.route('/lessons', methods=['GET'])
+@app.route('/lessons', methods=['GET', 'POST'])
 def main_window():
     form = Lessons()
+    if memory:
+        if form.lesson1.data:
+            return redirect('/les1')
+    else:
+        username = 'Гость'
+        forall = '-'
+        correct = '-'
+        wrong = '-'
     return render_template('lessons.html', title='Уроки', form=form)
+
+
+@app.route('/les1', methods=['GET', 'POST'])
+def les1():
+    form = Lesson1()
+    if form.send.data:
+        answer = request.form.get('answer')
+        with open('test.py', 'w') as file:
+            file.write(answer)
+            ra = cur.execute(f"""SELECT answer FROM Exercises WHERE lesson = '{str(lesson)}' AND num = '{str(num)}'""").fetchall()
+            check1 = check(ra[0][0])
+            check2 = check1[0]
+            error = check1[1].split('\n')
+            right_answer = ra[0][0]
+    # error = ["Traceback (most recent call last):",
+    #          'File "/home/mipper/code/python/flask/project/pytest/tmain2.py", line 12, in test',
+    #          "  exec(open('test.py').read())", 'File "<string>", line 1', '  or i in range(1, 11):',
+    #          '  ^', 'SyntaxError: invalid syntax']
+    return render_template('les1.html', title='Уроки', form=form, check=check2, error=error, answer=answer, exanswer=right_answer)
 
 
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1')
-
 con.close()
