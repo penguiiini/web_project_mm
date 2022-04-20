@@ -1,0 +1,29 @@
+{% extends "main_window.html" %}
+
+{% block les1 %}
+<h1></h1>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+<!--        {{ form.answer.label }}<br>-->
+        {{ form.answer(class="form-control", style="width: 1000px; height: 600px;
+        margin-top: 50px;") }}
+    </p>
+    <p> {{ form.send(type="submit", class="btn btn-danger", style="margin-left: 400px;") }} </p>
+    {% if check %}
+    <div class="alert bg-success" style="padding: 295px 200px 295px 0px" role="alert">
+        Решение верное
+    </div>
+    {% elif not check %}
+    <div class="group" style="background: red;" role="alert">
+        <div>Решение неверное</div>
+        <div>Ошибка:</div>
+        {% for i in error %}
+        <div> {{ i }} </div>
+        {% endfor %}
+        <div>Ваш ответ: {{ answer }}</div>
+        <div>Правильный ответ: {{ exanswer }}</div>
+    </div>
+    {% endif %}
+</form>
+{% endblock %}
