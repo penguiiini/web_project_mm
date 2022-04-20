@@ -6,12 +6,25 @@
         <a class="navbar-brand" href="#">Уроки</a>
     </nav>
 </header>
-<form action="" method="get" novalidate>
+<form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
-    <p>{{ form.lesson1(type="submit", class="btn btn-light") }}</p>
-    <p>{{ form.lesson2(type="submit", class="btn btn-light") }}</p>
-    <p>{{ form.lesson3(type="submit", class="btn btn-light") }}</p>
-    <p>{{ form.lesson4(type="submit", class="btn btn-light") }}</p>
-    <p>{{ form.lesson5(type="submit", class="btn btn-light") }}</p>
+    <p style="display: inline-block;">{{ form.lesson1(type="submit", class="btn btn-dark", style="width: 800px; height: 85px; margin-left: 50px;
+        margin-top: 50px; font-size:30px;") }}</p>
+    <p style="display: inline-block; font-size:30px">Привет, {{ username }}!</p>
+    <p> </p>
+    <p style="display: inline-block;">{{ form.lesson2(type="submit", class="btn btn-info", style="width: 800px; height: 75px; margin-left: 50px;
+        margin-top: 50px; font-size:30px;") }}</p>
+    <p style="display: inline-block; font-size:15px">Всего решено задач: {{ forall }}</p>
+    <p> </p>
+    <p style="display: inline-block;">{{ form.lesson3(type="submit", class="btn btn-success", style="width: 800px; height: 75px; margin-left: 50px;
+        margin-top: 50px; font-size:30px;") }}</p>
+    <p style="display: inline-block; font-size:15px; background: green"> Правильно решено задач: {{ correct }}</p>
+    <p> </p>
+    <p style="display: inline-block;">{{ form.lesson4(type="submit", class="btn btn-warning", style="width: 800px; height: 75px; margin-left: 50px;
+        margin-top: 50px; font-size:30px;") }}</p>
+    <p style="display: inline-block; font-size:15px; background: red"> Неправильно решено задач: {{ wrong }}</p>
+    <p> </p>
+    <p>{{ form.lesson5(type="submit", class="btn btn-danger", style="width: 800px; height: 75px; margin-left: 50px;
+        margin-top: 50px; font-size:30px;") }}</p>
 </form>
 {% endblock %}
