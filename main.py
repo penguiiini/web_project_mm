@@ -67,7 +67,7 @@ def registration1(login, password, email):
     con.commit()
 
 
-def test():
+def test(answer):
     old_stdout = sys.stdout
     old_stderr = sys.stderr
     redirected_output = sys.stdout = io.StringIO()
@@ -76,7 +76,7 @@ def test():
 
     try:
 
-        exec(open('test.py').read())
+        exec(answer)
 
     except:
 
@@ -89,23 +89,21 @@ def test():
     return out, exc
 
 
-def check(right_answer):
-
-    out, exc = test()
-    print(out, exc)
+def check(right_answer, answer):
+    out, exc = test(answer)
     if len(out.strip()) == 0:
         output = exc
     else:
         output = out.strip().split('\n')
+        if len(output) == 1:
+            output = output[0]
     if output == right_answer:
         return True, ''
     else:
         if exc is None:
             er = f'Fail on test number 1:\nExcepted: {right_answer}\nReceived: {output}'
-            er.split('/n')
         else:
             er = exc
-            er.split('/n')
         return False, er
 
 
@@ -166,17 +164,16 @@ def les1():
     form = Lesson1()
     if form.send.data:
         answer = request.form.get('answer')
-        with open('test.py', 'w') as file:
-            file.write(answer)
-            ra = cur.execute(f"""SELECT answer FROM Exercises WHERE lesson = '{str(lesson)}' AND num = '{str(num)}'""").fetchall()
-            check1 = check(ra[0][0])
-            check2 = check1[0]
-            error = check1[1].split('\n')
-            right_answer = ra[0][0]
-    # error = ["Traceback (most recent call last):",
-    #          'File "/home/mipper/code/python/flask/project/pytest/tmain2.py", line 12, in test',
-    #          "  exec(open('test.py').read())", 'File "<string>", line 1', '  or i in range(1, 11):',
-    #          '  ^', 'SyntaxError: invalid syntax']
+        ra = cur.execute(f"""SELECT answer FROM Exercises WHERE lesson = '{str(lesson)}' AND num = '{str(num)}'""").fetchall()
+        check1 = check(ra[0][0], answer)
+        check2 = check1[0]
+        error = check1[1].split('\n')
+        right_answer = ra[0][0]
+    else:
+        check2 = ''
+        error = ''
+        answer = ''
+        right_answer = ''
     return render_template('les1.html', title='Уроки', form=form, check=check2, error=error, answer=answer, exanswer=right_answer)
 
 
