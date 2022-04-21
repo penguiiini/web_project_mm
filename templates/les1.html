@@ -10,11 +10,11 @@
         margin-top: 50px;") }}
     </p>
     <p> {{ form.send(type="submit", class="btn btn-danger", style="margin-left: 400px;") }} </p>
-    {% if check %}
+    {% if check == True %}
     <div class="alert bg-success" style="padding: 295px 200px 295px 0px" role="alert">
         Решение верное
     </div>
-    {% elif not check %}
+    {% elif check == False %}
     <div class="group" style="background: red;" role="alert">
         <div>Решение неверное</div>
         <div>Ошибка:</div>
@@ -24,6 +24,8 @@
         <div>Ваш ответ: {{ answer }}</div>
         <div>Правильный ответ: {{ exanswer }}</div>
     </div>
+    {% else %}
+    <div> </div>
     {% endif %}
 </form>
 {% endblock %}
