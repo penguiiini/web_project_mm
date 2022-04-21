@@ -102,8 +102,10 @@ def check(right_answer, answer):
     else:
         if exc is None:
             er = f'Fail on test number 1:\nExcepted: {right_answer}\nReceived: {output}'
+            er.split('/n')
         else:
             er = exc
+            er.split('/n')
         return False, er
 
 
