@@ -1,7 +1,7 @@
 import os
 import io
 from flask import Flask, render_template, url_for, request, redirect
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskFor
 from wtforms import StringField, PasswordField, EmailField, SubmitField, BooleanField, Label
 from wtforms.validators import DataRequired, Email, Length, EqualTo, AnyOf, NoneOf, ValidationError
 import email_validator
@@ -101,7 +101,7 @@ def check(right_answer, answer):
         return True, ''
     else:
         if exc is None:
-            er = f'Fail on test number 1:\nExcepted: {right_answer}\nReceived: {output}'
+            er = f'Fail on test number 1:\nExpected: {right_answer}\nReceived: {output}'
             er.split('/n')
         else:
             er = exc
