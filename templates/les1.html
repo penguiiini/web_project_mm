@@ -4,18 +4,32 @@
 <h1></h1>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
-    <p>
-<!--        {{ form.answer.label }}<br>-->
-        {{ form.answer(class="form-control", style="width: 1000px; height: 600px;
-        margin-top: 50px;") }}
-    </p>
-    <p> {{ form.send(type="submit", class="btn btn-danger", style="margin-left: 400px;") }} </p>
     {% if check == True %}
-    <div class="alert bg-success" style="padding: 295px 200px 295px 0px" role="alert">
+    <p style="display: inline-block;">
+        {{ form.answer(class="form-control", style="width: 800px; height: 600px;
+        margin-top: 50px; border: 3px solid #0f0;") }}
+    </p>
+    <div class="group" style="display: inline-block; font-size:20px;">
+        {% for i in task %}
+        <div> {{ i }} </div>
+        {% endfor %}
+    </div>
+    <p> {{ form.send(type="submit", class="btn btn-danger", style="margin-left: 400px;") }} </p>
+    <div class="alert" role="alert" style="background-color: #0f0;">
         Решение верное
     </div>
     {% elif check == False %}
-    <div class="group" style="background: red;" role="alert">
+    <p style="display: inline-block;">
+        {{ form.answer(class="form-control", style="width: 800px; height: 600px;
+        margin-top: 50px; border: 3px solid #f00;") }}
+    </p>
+    <div class="group" style="display: inline-block; font-size:20px;">
+        {% for i in task %}
+        <div> {{ i }} </div>
+        {% endfor %}
+    </div>
+    <p> {{ form.send(type="submit", class="btn btn-danger", style="margin-left: 400px;") }} </p>
+    <div class="group" style="background-color: #f00;" role="alert">
         <div>Решение неверное</div>
         <div>Ошибка:</div>
         {% for i in error %}
@@ -25,7 +39,16 @@
         <div>Правильный ответ: {{ exanswer }}</div>
     </div>
     {% else %}
-    <div> </div>
+    <p style="display: inline-block;">
+        {{ form.answer(class="form-control", style="width: 700px; height: 600px;
+        margin-top: 50px; border: 3px solid LightSteelBlue;") }}
+    </p>
+    <div class="group" style="display: inline-block; font-size:17px;">
+        {% for i in task %}
+        <div> {{ i }} </div>
+        {% endfor %}
+    </div>
+    <p> {{ form.send(type="submit", class="btn btn-danger", style="margin-left: 400px;") }} </p>
     {% endif %}
 </form>
 {% endblock %}
