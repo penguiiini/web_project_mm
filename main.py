@@ -1,7 +1,7 @@
 import os
 import io
 from flask import Flask, render_template, url_for, request, redirect
-from flask_wtf import FlaskFor
+from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, EmailField, SubmitField, BooleanField, Label
 from wtforms.validators import DataRequired, Email, Length, EqualTo, AnyOf, NoneOf, ValidationError
 import email_validator
@@ -22,10 +22,10 @@ app.config['SECRET_KEY'] = 'MSilko&MMal'
 con = sqlite3.connect('data/FlaskProject.db', check_same_thread=False)
 cur = con.cursor()
 
-memory = False
 lesson = 1
 num = 1
-
+NowUser = False
+User = ''
 
 
 class Registraiton(FlaskForm):
@@ -64,6 +64,7 @@ class Lesson1(FlaskForm):
 def registration1(login, password, email):
     input = [(login, email, password)]
     cur.executemany('INSERT INTO Users(login, email, password) VALUES(?,?,?)', input)
+    cur.execute('INSERT INTO Users(forall, complete, wrong) VALUES(0,0,0)')
     con.commit()
 
 
@@ -98,7 +99,7 @@ def check(right_answer, answer):
         if len(output) == 1:
             output = output[0]
     if output == right_answer:
-        return True, ''
+        return True, '', output
     else:
         if exc is None:
             er = f'Fail on test number 1:\nExpected: {right_answer}\nReceived: {output}'
@@ -106,7 +107,7 @@ def check(right_answer, answer):
         else:
             er = exc
             er.split('/n')
-        return False, er
+        return False, er, output
 
 
 @app.route('/registration', methods=['GET', 'POST'])
@@ -130,17 +131,22 @@ def authorization():
             username = request.form.get('username')
             password = request.form.get('password')
             remember_me = request.form.get('remember_me')
-            if remember_me:
-                global memory
-                memory = True
+            last = cur.execute('''SELECT userlogin FROM Lastuser WHERE id = 1''').fetchall()
+            if username != last[0][0]:
+                cur.execute(f'''DELETE FROM Lastuser WHERE id = 1''')
+                cur.execute(f'''INSERT INTO Lastuser(userlogin) VALUES("1")''')
+                con.commit()
             try:
                 pas = cur.execute(f'''SELECT password FROM Users WHERE login="{username}"''')
             except sqlite3.Error:
                 pass
-            if form.remember_me.data:
-                memory = True
-            else:
-                memory = False
+            global NowUser, User
+            NowUser = True
+            User = username
+            if remember_me:
+                cur.execute(f'''DELETE FROM Lastuser WHERE id = 1''')
+                cur.execute(f'''INSERT INTO Lastuser(id, userlogin) VALUES(1, "{username}")''')
+                con.commit()
             return redirect("/lessons")
         if form.reg.data:
             return redirect("/registration")
@@ -150,33 +156,49 @@ def authorization():
 @app.route('/lessons', methods=['GET', 'POST'])
 def main_window():
     form = Lessons()
-    if memory:
-        if form.lesson1.data:
-            return redirect('/les1')
+    if not NowUser:
+        try:
+            pas = cur.execute('''SELECT login, forall, complete, wrong FROM Users WHERE login = 
+    (SELECT userlogin FROM Lastuser WHERE id = 1)''').fetchall()
+            username, forall, correct, wrong = pas[0][0], pas[0][1], pas[0][2], pas[0][3]
+        except:
+            username = 'Гость'
+            forall = '-'
+            correct = '-'
+            wrong = '-'
     else:
-        username = 'Гость'
-        forall = '-'
-        correct = '-'
-        wrong = '-'
-    return render_template('lessons.html', title='Уроки', form=form)
+        pas = cur.execute(f'''SELECT login, forall, complete, wrong FROM Users WHERE login = "{User}"''').fetchall()
+        username, forall, correct, wrong = pas[0][0], pas[0][1], pas[0][2], pas[0][3]
+
+    if form.lesson1.data:
+        return redirect('/lessons/les1')
+    return render_template('lessons.html', title='Уроки', form=form, username=username, forall=forall,
+                           correct=correct, wrong=wrong)
 
 
-@app.route('/les1', methods=['GET', 'POST'])
+@app.route('/lessons/les1', methods=['GET', 'POST'])
 def les1():
     form = Lesson1()
     if form.send.data:
         answer = request.form.get('answer')
-        ra = cur.execute(f"""SELECT answer FROM Exercises WHERE lesson = '{str(lesson)}' AND num = '{str(num)}'""").fetchall()
-        check1 = check(ra[0][0], answer)
-        check2 = check1[0]
-        error = check1[1].split('\n')
-        right_answer = ra[0][0]
+        with open('test.py', 'w') as file:
+            file.write(answer)
+            ra = cur.execute(f"""SELECT answer FROM Exercises WHERE lesson = '{str(lesson)}' AND num = '{str(num)}'""").fetchall()
+            check1 = check(ra[0][0], answer)
+            check2 = check1[0]
+            error = check1[1].split('\n')
+            user_answer = check1[2]
+            right_answer = ra[0][0]
     else:
         check2 = ''
         error = ''
-        answer = ''
+        user_answer = ''
         right_answer = ''
-    return render_template('les1.html', title='Уроки', form=form, check=check2, error=error, answer=answer, exanswer=right_answer)
+    return render_template('les1.html', title='Уроки', form=form, check=check2, error=error, answer=user_answer,
+    exanswer=right_answer,
+    task=['Условие задачи "Привет, <user>!":', ' ', 'Напишите программу, которая принимает на вход имя пользователя',
+          'и выводит его следующим образом: "Hello, <name>!".', ' ', 'Пример работы программы:', ' ', '|============|============|',
+          '|User |Hello, User!|', '|============|============|'])
 
 
 if __name__ == '__main__':
