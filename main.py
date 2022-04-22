@@ -45,7 +45,7 @@ class Authorization(FlaskForm):
             Length(min=4, max=16, message="Неверный пароль")])
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
-    reg = SubmitField('Зарегестрироватся')
+    reg = SubmitField('Зарегестрироваться')
 
 
 class Lessons(FlaskForm):
@@ -126,8 +126,8 @@ def registration():
 @app.route('/authorization', methods=['GET', 'POST'])
 def authorization():
     form = Authorization()
-    if form.validate_on_submit():
-        if form.submit.data:
+    if form.submit.data:
+        if form.validate_on_submit():
             username = request.form.get('username')
             password = request.form.get('password')
             remember_me = request.form.get('remember_me')
@@ -136,20 +136,24 @@ def authorization():
                 cur.execute(f'''DELETE FROM Lastuser WHERE id = 1''')
                 cur.execute(f'''INSERT INTO Lastuser(userlogin) VALUES("1")''')
                 con.commit()
+            if remember_me:
+                cur.execute(f'''DELETE FROM Lastuser WHERE id = 1''')
+                cur.execute(f'''INSERT INTO Lastuser(id, userlogin) VALUES(1, "{username}")''')
+                con.commit()
+            else:
+                cur.execute(f'''DELETE FROM Lastuser WHERE id = 1''')
+                cur.execute(f'''INSERT INTO Lastuser(id, userlogin) VALUES(1, "1")''')
+                con.commit()
             try:
                 pas = cur.execute(f'''SELECT password FROM Users WHERE login="{username}"''')
-                global NowUser, User
-                NowUser = True
-                User = username
-                if remember_me:
-                    cur.execute(f'''DELETE FROM Lastuser WHERE id = 1''')
-                    cur.execute(f'''INSERT INTO Lastuser(id, userlogin) VALUES(1, "{username}")''')
-                    con.commit()
-                return redirect("/lessons")
             except sqlite3.Error:
                 pass
-        if form.reg.data:
-            return redirect("/registration")
+            global NowUser, User
+            NowUser = True
+            User = username
+            return redirect("/lessons")
+    if form.reg.data:
+        return redirect("/registration")
     return render_template('authorization.html', title='Авторизация', form=form)
 
 
@@ -196,19 +200,22 @@ def les1():
         error = ''
         user_answer = ''
         right_answer = ''
-    pas = cur.execute(f'''SELECT login, forall, complete, wrong FROM Users WHERE login = "{User}"''').fetchall()
-    username, forall, correct, wrong = pas[0][0], pas[0][1], pas[0][2], pas[0][3]
-    cur.execute(f'''UPDATE Users
-        SET forall = {int(forall) + 1}
-        WHERE login = "{User}"''')
-    if check2 == True:
+    try:
+        pas = cur.execute(f'''SELECT login, forall, complete, wrong FROM Users WHERE login = "{User}"''').fetchall()
+        username, forall, correct, wrong = pas[0][0], pas[0][1], pas[0][2], pas[0][3]
         cur.execute(f'''UPDATE Users
-        SET complete = {int(correct) + 1}
-        WHERE login = "{User}"''')
-    elif check2 ==False:
-        cur.execute(f'''UPDATE Users
-        SET complete = {int(wrong) + 1}
-        WHERE login = "{User}"''')
+            SET forall = {int(forall) + 1}
+            WHERE login = "{User}"''')
+        if check2 == True:
+            cur.execute(f'''UPDATE Users
+                SET complete = {int(correct) + 1}
+                WHERE login = "{User}"''')
+        elif check2 ==False:
+            cur.execute(f'''UPDATE Users
+                    SET complete = {int(wrong) + 1}
+                    WHERE login = "{User}"''')
+    except:
+        pass
     return render_template('les1.html', title='Уроки', form=form, check=check2, error=error, answer=user_answer,
     exanswer=right_answer,
     task=['Условие задачи "Привет, world!":', ' ', 'Напишите программу, которая выводит "Hello, world!"'])
@@ -238,19 +245,22 @@ def les12():
         error = ''
         user_answer = ''
         right_answer = ''
-    pas = cur.execute(f'''SELECT login, forall, complete, wrong FROM Users WHERE login = "{User}"''').fetchall()
-    username, forall, correct, wrong = pas[0][0], pas[0][1], pas[0][2], pas[0][3]
-    cur.execute(f'''UPDATE Users
-        SET forall = {int(forall) + 1}
-        WHERE login = "{User}"''')
-    if check2 == True:
+    try:
+        pas = cur.execute(f'''SELECT login, forall, complete, wrong FROM Users WHERE login = "{User}"''').fetchall()
+        username, forall, correct, wrong = pas[0][0], pas[0][1], pas[0][2], pas[0][3]
         cur.execute(f'''UPDATE Users
-        SET complete = {int(correct) + 1}
-        WHERE login = "{User}"''')
-    elif check2 ==False:
-        cur.execute(f'''UPDATE Users
-        SET complete = {int(wrong) + 1}
-        WHERE login = "{User}"''')
+            SET forall = {int(forall) + 1}
+            WHERE login = "{User}"''')
+        if check2 == True:
+            cur.execute(f'''UPDATE Users
+            SET complete = {int(correct) + 1}
+            WHERE login = "{User}"''')
+        elif check2 ==False:
+            cur.execute(f'''UPDATE Users
+            SET complete = {int(wrong) + 1}
+            WHERE login = "{User}"''')
+    except:
+        pass
     return render_template('les1.html', title='Уроки', form=form, check=check2, error=error, answer=user_answer,
                            exanswer=right_answer,
                            task=['Условие задачи "Привет, <user>!":', ' ', 'Напишите программу, которая принимает на вход имя пользователя',
