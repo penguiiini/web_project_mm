@@ -2,7 +2,7 @@ import os
 import io
 from flask import Flask, render_template, url_for, request, redirect
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, EmailField, SubmitField, BooleanField, Label
+from wtforms import StringField, PasswordField, EmailField, SubmitField, BooleanField, Label, TextAreaField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, AnyOf, NoneOf, ValidationError
 import email_validator
 import sqlalchemy as sa
@@ -57,7 +57,7 @@ class Lessons(FlaskForm):
 
 
 class Lesson1(FlaskForm):
-    answer = StringField('Введите решение', validators=[DataRequired("Это поле обязательно!")])
+    answer = TextAreaField('Введите решение', validators=[DataRequired("Это поле обязательно!")])
     send = SubmitField('Отправить')
 
 
@@ -181,6 +181,8 @@ def les1():
     form = Lesson1()
     if form.send.data:
         answer = request.form.get('answer')
+        lesson = 1
+        num = 1
         with open('test.py', 'w') as file:
             file.write(answer)
             ra = cur.execute(f"""SELECT answer FROM Exercises WHERE lesson = '{str(lesson)}' AND num = '{str(num)}'""").fetchall()
@@ -194,11 +196,66 @@ def les1():
         error = ''
         user_answer = ''
         right_answer = ''
+    pas = cur.execute(f'''SELECT login, forall, complete, wrong FROM Users WHERE login = "{User}"''').fetchall()
+    username, forall, correct, wrong = pas[0][0], pas[0][1], pas[0][2], pas[0][3]
+    cur.execute(f'''UPDATE Users
+        SET forall = {int(forall) + 1}
+        WHERE login = "{User}"''')
+    if check2 == True:
+        cur.execute(f'''UPDATE Users
+        SET complete = {int(correct) + 1}
+        WHERE login = "{User}"''')
+    elif check2 ==False:
+        cur.execute(f'''UPDATE Users
+        SET complete = {int(wrong) + 1}
+        WHERE login = "{User}"''')
     return render_template('les1.html', title='Уроки', form=form, check=check2, error=error, answer=user_answer,
     exanswer=right_answer,
-    task=['Условие задачи "Привет, <user>!":', ' ', 'Напишите программу, которая принимает на вход имя пользователя',
-          'и выводит его следующим образом: "Hello, <name>!".', ' ', 'Пример работы программы:', ' ', '|============|============|',
-          '|User |Hello, User!|', '|============|============|'])
+    task=['Условие задачи "Привет, world!":', ' ', 'Напишите программу, которая выводит "Hello, world!"'])
+
+
+@app.route('/lessons/les1.2', methods=['GET', 'POST'])
+def les12():
+    form = Lesson1()
+    if form.send.data:
+        # answer = request.form.get('answer')
+        # lesson = 1
+        # num = 2
+        # with open('test.py', 'w') as file:
+        #     file.write(answer)
+        #     ra = cur.execute(f"""SELECT answer FROM Exercises WHERE lesson = '{str(lesson)}' AND num = '{str(num)}'""").fetchall()
+        #     check1 = check(ra[0][0], answer)
+        #     check2 = check1[0]
+        #     error = check1[1].split('\n')
+        #     user_answer = check1[2]
+        #     right_answer = ra[0][0]
+        check2 = True
+        error = ''
+        user_answer = ''
+        right_answer = ''
+    else:
+        check2 = ''
+        error = ''
+        user_answer = ''
+        right_answer = ''
+    pas = cur.execute(f'''SELECT login, forall, complete, wrong FROM Users WHERE login = "{User}"''').fetchall()
+    username, forall, correct, wrong = pas[0][0], pas[0][1], pas[0][2], pas[0][3]
+    cur.execute(f'''UPDATE Users
+        SET forall = {int(forall) + 1}
+        WHERE login = "{User}"''')
+    if check2 == True:
+        cur.execute(f'''UPDATE Users
+        SET complete = {int(correct) + 1}
+        WHERE login = "{User}"''')
+    elif check2 ==False:
+        cur.execute(f'''UPDATE Users
+        SET complete = {int(wrong) + 1}
+        WHERE login = "{User}"''')
+    return render_template('les1.html', title='Уроки', form=form, check=check2, error=error, answer=user_answer,
+                           exanswer=right_answer,
+                           task=['Условие задачи "Привет, <user>!":', ' ', 'Напишите программу, которая принимает на вход имя пользователя',
+                                 'и выводит его следующим образом: "Hello, <name>!".', ' ', 'Пример работы программы:', ' ', '|============|============|',
+                                 '|User |Hello, User!|', '|============|============|'])
 
 
 if __name__ == '__main__':
