@@ -49,7 +49,7 @@ class Authorization(FlaskForm):
 
 
 class Lessons(FlaskForm):
-    lesson1 = SubmitField('Урок - 1: тема')
+    lesson1 = SubmitField('Урок - 1: ввод и вывод данных')
     lesson2 = SubmitField('Урок - 2: тема')
     lesson3 = SubmitField('Урок - 3: тема')
     lesson4 = SubmitField('Урок - 4: тема')
@@ -62,8 +62,8 @@ class Lesson1(FlaskForm):
 
 
 def registration1(login, password, email):
-    input = [(login, email, password)]
-    cur.executemany('INSERT INTO Users(login, email, password) VALUES(?,?,?)', input)
+    input = [(login, email, password, 0, 0, 0)]
+    cur.executemany('INSERT INTO Users(login, email, password, forall, complete, wrong) VALUES(?,?,?,?,?,?)', input)
     cur.execute('INSERT INTO Users(forall, complete, wrong) VALUES(0,0,0)')
     con.commit()
 
@@ -138,16 +138,16 @@ def authorization():
                 con.commit()
             try:
                 pas = cur.execute(f'''SELECT password FROM Users WHERE login="{username}"''')
+                global NowUser, User
+                NowUser = True
+                User = username
+                if remember_me:
+                    cur.execute(f'''DELETE FROM Lastuser WHERE id = 1''')
+                    cur.execute(f'''INSERT INTO Lastuser(id, userlogin) VALUES(1, "{username}")''')
+                    con.commit()
+                return redirect("/lessons")
             except sqlite3.Error:
                 pass
-            global NowUser, User
-            NowUser = True
-            User = username
-            if remember_me:
-                cur.execute(f'''DELETE FROM Lastuser WHERE id = 1''')
-                cur.execute(f'''INSERT INTO Lastuser(id, userlogin) VALUES(1, "{username}")''')
-                con.commit()
-            return redirect("/lessons")
         if form.reg.data:
             return redirect("/registration")
     return render_template('authorization.html', title='Авторизация', form=form)
