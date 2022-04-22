@@ -9,22 +9,20 @@
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <p style="display: inline-block;">{{ form.lesson1(type="submit", class="btn btn-dark", style="width: 800px; height: 85px; margin-left: 50px;
+        font-size:30px;") }}</p>
+    <div class="group" style="display: inline-block; font-size:25px">
+        <div>Привет, {{ username }}!</div>
+        <div>Всего решений отправлено: {{ forall }}</div>
+        <div style="background: green"> Правильно решено задач: {{ correct }}</div>
+        <div style="background: red"> Неправильно решено задач: {{ wrong }}</div>
+    </div>
+    <p>{{ form.lesson2(type="submit", class="btn btn-dark", style="width: 800px; height: 75px; margin-left: 50px;
         margin-top: 50px; font-size:30px;") }}</p>
-    <p style="display: inline-block; font-size:30px">Привет, {{ username }}!</p>
-    <p> </p>
-    <p style="display: inline-block;">{{ form.lesson2(type="submit", class="btn btn-info", style="width: 800px; height: 75px; margin-left: 50px;
+    <p>{{ form.lesson3(type="submit", class="btn btn-dark", style="width: 800px; height: 75px; margin-left: 50px;
         margin-top: 50px; font-size:30px;") }}</p>
-    <p style="display: inline-block; font-size:15px">Всего решено задач: {{ forall }}</p>
-    <p> </p>
-    <p style="display: inline-block;">{{ form.lesson3(type="submit", class="btn btn-success", style="width: 800px; height: 75px; margin-left: 50px;
+    <p >{{ form.lesson4(type="submit", class="btn btn-dark", style="width: 800px; height: 75px; margin-left: 50px;
         margin-top: 50px; font-size:30px;") }}</p>
-    <p style="display: inline-block; font-size:15px; background: green"> Правильно решено задач: {{ correct }}</p>
-    <p> </p>
-    <p style="display: inline-block;">{{ form.lesson4(type="submit", class="btn btn-warning", style="width: 800px; height: 75px; margin-left: 50px;
-        margin-top: 50px; font-size:30px;") }}</p>
-    <p style="display: inline-block; font-size:15px; background: red"> Неправильно решено задач: {{ wrong }}</p>
-    <p> </p>
-    <p>{{ form.lesson5(type="submit", class="btn btn-danger", style="width: 800px; height: 75px; margin-left: 50px;
+    <p>{{ form.lesson5(type="submit", class="btn btn-dark", style="width: 800px; height: 75px; margin-left: 50px;
         margin-top: 50px; font-size:30px;") }}</p>
 </form>
 {% endblock %}
