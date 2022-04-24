@@ -46,6 +46,7 @@ class Authorization(FlaskForm):
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
     reg = SubmitField('Зарегестрироваться')
+    guest = SubmitField('Войти как гость')
 
 
 class Lessons(FlaskForm):
@@ -59,6 +60,13 @@ class Lessons(FlaskForm):
 class Lesson1(FlaskForm):
     answer = TextAreaField('Введите решение', validators=[DataRequired("Это поле обязательно!")])
     send = SubmitField('Отправить')
+
+
+class Prom1(FlaskForm):
+    task1 = SubmitField('Задача 1')
+    theory = SubmitField('Учебный материал')
+    task2 = SubmitField('Задача 2')
+    task3 = SubmitField('Задача 3')
 
 
 def registration1(login, password, email):
@@ -154,6 +162,9 @@ def authorization():
             return redirect("/lessons")
     if form.reg.data:
         return redirect("/registration")
+    if form.guest.data:
+        User = 'Guest'
+        return redirect("/lessons")
     return render_template('authorization.html', title='Авторизация', form=form)
 
 
@@ -176,12 +187,22 @@ def main_window():
 
     if form.lesson1.data:
         return redirect('/lessons/les1')
+    if form.lesson2.data:
+        return redirect('/lessons/les1.2')
     return render_template('lessons.html', title='Уроки', form=form, username=username, forall=forall,
                            correct=correct, wrong=wrong)
 
 
 @app.route('/lessons/les1', methods=['GET', 'POST'])
 def les1():
+    form = Prom1()
+    if form.task1.data:
+        return redirect('/lessons/les1/task1')
+    return render_template('prom1.html', title='Урок 1', form=form)
+
+
+@app.route('/lessons/les1/task1', methods=['GET', 'POST'])
+def task11():
     form = Lesson1()
     if form.send.data:
         answer = request.form.get('answer')
