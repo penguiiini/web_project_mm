@@ -4,32 +4,38 @@
 <h1></h1>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
+    <style>
+    blck {
+    display: inline-block;
+    vertical-align: top;
+    }
+    </style>
     <p>{{ form.back_to_tasks(class="btn", style="width: 150px; height: 50px; background: #1c1c1c; color: #f8f8ff;") }}</p>
     <p>{{ form.back_to_main(class="btn", style="width: 150px; height: 50px; background: #1c1c1c; color: #f8f8ff;") }}</p>
     {% if check == True %}
-        <p style="display: inline-block;">
+        <blck>
             {{ form.answer(class="form-control", style="width: 700px; height: 600px;
             margin-left: 350px; border: 3px solid #0f0;") }}
-        </p>
-        <div class="group" style="display: inline-block; font-size:20px;">
+        </blck>
+        <blck class="group" style="font-size:20px;">
             {% for i in task %}
                 <pre> {{ i }} </pre>
             {% endfor %}
-        </div>
+        </blck>
         <p> {{ form.send(type="submit", class="btn", style="margin-left: 350px; background: #1c1c1c; color: #f8f8ff;") }} </p>
         <div class="alert" role="alert" style="background-color: #4c9141;">
             Решение верное
         </div>
     {% elif check == False %}
-        <p style="display: inline-block;">
+        <blck>
             {{ form.answer(class="form-control", style="width: 700px; height: 600px;
             margin-left: 500px; border: 3px solid #f00;") }}
-        </p>
-        <div class="group" style="display: inline-block; font-size:20px;">
+        </blck>
+        <blck class="group" style="font-size:20px;">
             {% for i in task %}
                 <pre> {{ i }} </pre>
             {% endfor %}
-        </div>
+        </blck>
         <p> {{ form.send(type="submit", class="btn btn", style="margin-left: 350px; background: #1c1c1c; color: #f8f8ff;") }} </p>
         <div class="group" style="background-color: #ff0000;" role="alert">
             <pre>Решение неверное</pre>
@@ -41,15 +47,15 @@
             <pre>Правильный ответ: {{ exanswer }}</pre>
         </div>
     {% else %}
-        <p style="display: inline-block;">
+        <blck>
             {{ form.answer(class="form-control", style="width: 700px; height: 600px;
             margin-left: 350px; border: 3px solid LightSteelBlue;") }}
-        </p>
-        <div class="group" style="display: inline-block; font-size:20px;">
+        </blck>
+        <blck class="group" style="font-size:20px;">
             {% for i in task %}
                 <pre> {{ i }} </pre>
             {% endfor %}
-        </div>
+        </blck>
         <p> {{ form.send(type="submit", class="btn",  style="background: #1c1c1c; color: #f8f8ff; margin-left: 500px") }} </p>
     {% endif %}
 </form>
