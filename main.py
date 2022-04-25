@@ -51,19 +51,18 @@ class Authorization(FlaskForm):
 
 class Lessons(FlaskForm):
     lesson1 = SubmitField('Урок - 1: ввод и вывод данных')
-    exit = SubmitField('Выйти из аккаунта')
     lesson2 = SubmitField('Урок - 2: тема')
+    lesson3 = SubmitField('Урок - 3: тема')
+    lesson4 = SubmitField('Урок - 4: тема')
+    lesson5 = SubmitField('Урок - 5: тема')
 
 
 class Lesson1(FlaskForm):
-    back_to_tasks = SubmitField(u'\u2190' +  ' К другим заданиям')
-    back_to_main = SubmitField(u'\u2302' +  ' На главную')
     answer = TextAreaField('Введите решение', validators=[DataRequired("Это поле обязательно!")])
     send = SubmitField('Отправить')
 
 
 class Prom1(FlaskForm):
-    back_to_main = SubmitField(u'\u2190' +  ' На главную')
     task1 = SubmitField('Задача 1')
     theory = SubmitField('Учебный материал')
     task2 = SubmitField('Задача 2')
@@ -77,7 +76,7 @@ def registration1(login, password, email):
     con.commit()
 
 
-def test(answer):
+def test11(answer):
     old_stdout = sys.stdout
     old_stderr = sys.stderr
     redirected_output = sys.stdout = io.StringIO()
@@ -99,8 +98,46 @@ def test(answer):
     return out, exc
 
 
-def check(right_answer, answer):
-    out, exc = test(answer)
+def test12(answer):
+    tests, count = {'U1': None, 'U2': None, 'U3': None}, 0
+    for i in tests:
+        count += 1
+
+        old_out = sys.stdout
+        old_err = sys.stderr
+
+        redirected_output = sys.stdout = io.StringIO()
+
+        out, exc = None, None
+
+        f1 = sys.stdin
+        ra = f"Hello, {i}!"
+        f = io.StringIO(i)
+        sys.stdin = f
+
+        try:
+            exec(answer)
+        except:
+            import traceback
+            exc = traceback.format_exc()
+            return ra, out, exc, count
+
+        out = redirected_output.getvalue()
+        sys.stdout = old_out
+        sys.stderr = old_err
+
+        f.close()
+        sys.stdin = f1
+        
+        ra, out = ra.strip(), out.strip() 
+        
+        if ra != out:
+            return ra, out, 'Сбой в тесте №', count
+    return '', '', None, count
+
+
+def check11(right_answer, answer):
+    out, exc = test11(answer)
     if len(out.strip()) == 0:
         output = exc
     else:
@@ -111,12 +148,25 @@ def check(right_answer, answer):
         return True, '', output
     else:
         if exc is None:
-            er = f'Fail on test number 1:\nExpected: {right_answer}\nReceived: {output}'
+            er = f'Сбой в тесте №1:'
             er.split('/n')
         else:
             er = exc
             er.split('/n')
         return False, er, output
+
+
+def check12(answer):
+    right_answer, out, exc, count = test12(answer)
+    
+    if exc is None:
+        return True, '', '', right_answer
+    else:
+        if exc[0:4] == 'Сбой':
+            output_exc = exc + str(count) + ':'
+            return False, output_exc, out, right_answer
+        else:
+            return False, exc, out, right_answer
 
 
 @app.route('/registration', methods=['GET', 'POST'])
@@ -172,7 +222,6 @@ def authorization():
 @app.route('/lessons', methods=['GET', 'POST'])
 def main_window():
     form = Lessons()
-    global NowUser
     if not NowUser:
         try:
             pas = cur.execute('''SELECT login, forall, complete, wrong FROM Users WHERE login = 
@@ -191,9 +240,6 @@ def main_window():
         return redirect('/lessons/les1')
     if form.lesson2.data:
         return redirect('/lessons/les1.2')
-    if form.exit.data:
-        NowUser = False
-        return redirect('/authorization')
     return render_template('lessons.html', title='Уроки', form=form, username=username, forall=forall,
                            correct=correct, wrong=wrong)
 
@@ -207,8 +253,6 @@ def les1():
         return redirect('/lessons/les1/task2')
     if form.task3.data:
         return redirect('/lessons/les1/task3')
-    if form.back_to_main.data:
-        return redirect('/lessons')
     return render_template('prom1.html', title='Урок 1', form=form)
 
 
@@ -219,18 +263,12 @@ def task11():
         answer = request.form.get('answer')
         lesson = 1
         num = 1
-        with open('test.py', 'w') as file:
-            file.write(answer)
-            ra = cur.execute(f"""SELECT answer FROM Exercises WHERE lesson = '{str(lesson)}' AND num = '{str(num)}'""").fetchall()
-            check1 = check(ra[0][0], answer)
-            check2 = check1[0]
-            error = check1[1].split('\n')
-            user_answer = check1[2]
-            right_answer = ra[0][0]
-    if form.back_to_tasks.data:
-        return redirect('/lessons/les1')
-    if form.back_to_main.data:
-        return redirect('/lessons')
+        ra = cur.execute(f"""SELECT answer FROM Exercises WHERE lesson = '{str(lesson)}' AND num = '{str(num)}'""").fetchall()
+        check1 = check11(ra[0][0], answer)
+        check2 = check1[0]
+        error = check1[1].split('\n')
+        user_answer = check1[2]
+        right_answer = ra[0][0]
     else:
         check2 = ''
         error = ''
@@ -252,7 +290,7 @@ def task11():
                     WHERE login = "{User}"''')
     except:
         pass
-    return render_template('task.html', title='Уроки', form=form, check=check2, error=error, answer=user_answer,
+    return render_template('task1.html', title='Уроки', form=form, check=check2, error=error, answer=user_answer,
     exanswer=right_answer,
     task=['Условие задачи "Привет, world!":', ' ', 'Напишите программу, которая выводит "Hello, world!"'])
 
@@ -261,21 +299,12 @@ def task11():
 def task12():
     form = Lesson1()
     if form.send.data:
-        # answer = request.form.get('answer')
-        # lesson = 1
-        # num = 2
-        # with open('test.py', 'w') as file:
-        #     file.write(answer)
-        #     ra = cur.execute(f"""SELECT answer FROM Exercises WHERE lesson = '{str(lesson)}' AND num = '{str(num)}'""").fetchall()
-        #     check1 = check(ra[0][0], answer)
-        #     check2 = check1[0]
-        #     error = check1[1].split('\n')
-        #     user_answer = check1[2]
-        #     right_answer = ra[0][0]
-        check2 = True
-        error = ''
-        user_answer = ''
-        right_answer = ''
+        answer = request.form.get('answer')
+        check1 = check12(answer)
+        check2 = check1[0]
+        error = check1[1].split('\n')
+        user_answer = check1[2]
+        right_answer = check1[3]
     else:
         check2 = ''
         error = ''
@@ -288,37 +317,36 @@ def task12():
             SET forall = {int(forall) + 1}
             WHERE login = "{User}"''')
         if check2 == True:
-            cur.execute(f'''UPDATE Users
-            SET complete = {int(correct) + 1}
-            WHERE login = "{User}"''')
+             cur.execute(f'''UPDATE Users
+                SET complete = {int(correct) + 1}
+                WHERE login = "{User}"''')
         elif check2 ==False:
             cur.execute(f'''UPDATE Users
-            SET complete = {int(wrong) + 1}
-            WHERE login = "{User}"''')
+                 SET complete = {int(wrong) + 1}
+                 WHERE login = "{User}"''')
     except:
         pass
-    return render_template('task.html', title='Уроки', form=form, check=check2, error=error, answer=user_answer,
+
+    return render_template('task1.html', title='Уроки', form=form, check=check2, error=error, answer=user_answer,
                            exanswer=right_answer,
-                           task=['Условие задачи "Привет, <user>!":', ' ', 'Напишите программу, которая принимает на вход имя пользователя',
-                                 'и выводит его следующим образом: "Hello, <name>!".', ' ', 'Пример работы программы:', ' ', '|============|============|',
+                           task=['Условие задачи "Привет, <user>!":', ' ', 'Напишите программу, которая принимает на вход имя пользователя (например, <name>),',
+                                 'и выводит его следующим образом: "Hello, <name>!".', ' ', 'Пример работы программы:', ' ', '|============|============|', '| Ввод:      | Вывод:     |', '|============|============|',
                                  '|User        |Hello, User!|', '|============|============|'])
 
 
 @app.route('/lessons/les1/task3', methods=['GET', 'POST'])
 def task13():
-    form = Lesson1
+    form = Lesson1()
     if form.send.data:
         answer = request.form.get('answer')
         lesson = 1
         num = 1
-        with open('test.py', 'w') as file:
-            file.write(answer)
-            ra = cur.execute(f"""SELECT answer FROM Exercises WHERE lesson = '{str(lesson)}' AND num = '{str(num)}'""").fetchall()
-            check1 = check(ra[0][0], answer)
-            check2 = check1[0]
-            error = check1[1].split('\n')
-            user_answer = check1[2]
-            right_answer = ra[0][0]
+        ra = cur.execute(f"""SELECT answer FROM Exercises WHERE lesson = '{str(lesson)}' AND num = '{str(num)}'""").fetchall()
+        check1 = check13(ra[0][0], answer)
+        check2 = check1[0]
+        error = check1[1].split('\n')
+        user_answer = check1[2]
+        right_answer = ra[0][0]
     else:
         check2 = ''
         error = ''
@@ -331,18 +359,18 @@ def task13():
             SET forall = {int(forall) + 1}
             WHERE login = "{User}"''')
         if check2 == True:
-            cur.execute(f'''UPDATE Users
+             cur.execute(f'''UPDATE Users
                 SET complete = {int(correct) + 1}
                 WHERE login = "{User}"''')
         elif check2 ==False:
             cur.execute(f'''UPDATE Users
-                    SET complete = {int(wrong) + 1}
-                    WHERE login = "{User}"''')
+                 SET complete = {int(wrong) + 1}
+                 WHERE login = "{User}"''')
     except:
         pass
-    return render_template('task.html', title='Уроки', form=form, check=check2, error=error, answer=user_answer,
-                           exanswer=right_answer,
-                           task=['Условие задачи "Привет, world!":', ' ', 'Напишите программу, которая выводит "Hello, world!"'])
+    return render_template('task1.html', title='Уроки', form=form, check=check2, error=error, answer=user_answer,
+        exanswer=right_answer,
+        task=['Условие задачи "Привет, world!":', ' ', 'Напишите программу, которая выводит "Hello, world!"']) 
 
 
 if __name__ == '__main__':
