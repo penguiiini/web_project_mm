@@ -4,14 +4,18 @@
 <h1> </h1>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
-    <p style="display: inline-block;">{{ form.task1(type="submit", class="btn btn-dark", style="width: 800px; height: 75px;
+    <p>{{ form.back_to_main(type="submit",
+        class="btn", style="background: #1c1c1c; color: #f8f8ff; width: 150px; height: 50px; font-size:15px;") }}</p>
+    <div class="group" style="margin-left:500px">
+        <p style="display: inline-block;">{{ form.task1(type="submit", class="btn", style="width: 800px; height: 75px;
+            font-size:30px; background: #1c1c1c; color: #f8f8ff;") }}</p>
+        <p style="display: inline-block;">{{ form.theory(type="submit", class="btn", style="width: 400px; height: 75px;
+            margin-top: 50px; font-size:30px; background: #1c1c1c; color: #f8f8ff;") }}</p>
+        <p> </p>
+        <p>{{ form.task2(type="submit", class="btn", style="width: 800px; height: 75px; background: #1c1c1c; color: #f8f8ff;
         margin-top: 50px; font-size:30px;") }}</p>
-    <p style="display: inline-block;">{{ form.theory(type="submit", class="btn btn-dark", style="width: 400px; height: 75px;
+        <p>{{ form.task3(type="submit", class="btn", style="width: 800px; height: 75px; background: #1c1c1c; color: #f8f8ff;
         margin-top: 50px; font-size:30px;") }}</p>
-    <p> </p>
-    <p>{{ form.task2(type="submit", class="btn btn-dark", style="width: 800px; height: 75px;
-        margin-top: 50px; font-size:30px;") }}</p>
-    <p>{{ form.task3(type="submit", class="btn btn-dark", style="width: 800px; height: 75px;
-        margin-top: 50px; font-size:30px;") }}</p>
+    </div>
 </form>
 {% endblock %}
