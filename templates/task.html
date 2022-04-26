@@ -9,6 +9,16 @@
     display: inline-block;
     vertical-align: top;
     }
+    table {
+    width: 100%; 
+    background: black; 
+    color: black; 
+    border-spacing: 1px; 
+    }
+    td, th {
+    background: white;
+    padding: 5px; 
+    }
     </style>
     <p>{{ form.back_to_tasks(class="btn", style="width: 150px; height: 50px; background: #1c1c1c; color: #f8f8ff;") }}</p>
     <p>{{ form.back_to_main(class="btn", style="width: 150px; height: 50px; background: #1c1c1c; color: #f8f8ff;") }}</p>
@@ -21,6 +31,10 @@
             {% for i in task %}
                 <pre> {{ i }} </pre>
             {% endfor %}
+           <table>
+                <tr><th>Ввод:</th><th>Вывод:</th></tr>
+                <tr><td> {{ inputi }} </td><td> {{ outputi }} </td></tr>
+           </table> 
         </blck>
         <p> {{ form.send(type="submit", class="btn", style="margin-left: 350px; background: #1c1c1c; color: #f8f8ff;") }} </p>
         <div class="alert" role="alert" style="background-color: #4c9141;">
@@ -29,12 +43,16 @@
     {% elif check == False %}
         <blck>
             {{ form.answer(class="form-control", style="width: 700px; height: 600px;
-            margin-left: 500px; border: 3px solid #f00;") }}
+            margin-left: 350px; border: 3px solid #f00;") }}
         </blck>
         <blck class="group" style="font-size:20px;">
             {% for i in task %}
                 <pre> {{ i }} </pre>
             {% endfor %}
+            <table>
+                <tr><th>Ввод:</th><th>Вывод:</th></tr>
+                <tr><td> {{ inputi }} </td><td> {{ outputi }} </td></tr>
+           </table>         
         </blck>
         <p> {{ form.send(type="submit", class="btn btn", style="margin-left: 350px; background: #1c1c1c; color: #f8f8ff;") }} </p>
         <div class="group" style="background-color: #ff0000;" role="alert">
@@ -55,6 +73,10 @@
             {% for i in task %}
                 <pre> {{ i }} </pre>
             {% endfor %}
+            <table>
+                <tr><th>Ввод:</th><th>Вывод:</th></tr>
+                <tr><td>{{ inputi }}</td><td>{{ outputi }}</td></tr>
+            </table>
         </blck>
         <p> {{ form.send(type="submit", class="btn",  style="background: #1c1c1c; color: #f8f8ff; margin-left: 500px") }} </p>
     {% endif %}
