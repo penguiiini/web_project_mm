@@ -1,0 +1,106 @@
+{% extends "main_window.html" %}
+
+{% block theory1 %}
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>{{ form.back_to_tasks1(class="btn", style="width: 150px; height: 50px; background: #1c1c1c; color: #f8f8ff;") }}</p>
+    <p>{{ form.back_to_main1(class="btn", style="width: 150px; height: 50px; background: #1c1c1c; color: #f8f8ff;") }}</p>
+    <div style="margin-left: 500px; font-size: 20px;width: 900px;">
+        <h2>Команда print()</h2>
+    <div style="background: #f7f21a; width: 900px; border: 10px solid #f7f21a">
+        <b>Команда print()</b>
+        <div>Внутри круглых скобок через запятую мы указываем то, что необходимо вывести
+        на экран. Если это какой-то текст, указываем его внутри кавычек. Кавычки могут быть как одинарными,
+        так и двойными. Главное, чтобы текст начинался и заканчивался кавычками одного типа.
+       Команда print записывается только строчными буквами, другое написание недопустимо,
+        так как в Python строчные и заглавные буквы различны.</div>
+    </div>
+    <div>Например</div>
+    <div class="block" style="background: #e1e2e6; width: 600px; border: 6px solid #e1e2e6;">
+        <div style="display: inline-block;color: #0095b6">print</div
+        ><div style="display: inline-block;color: #666666">(</div
+    ><div style="display: inline-block;color: #008000">'Привет'</div
+    ><div style="display: inline-block;color: #666666">)</div>
+    </div>
+<h2>Команда input()</h2>
+    <div style="display: inline-block;">Команда</div>
+    <i style="display: inline-block;">input</i><div style="display: inline-block;"> используется для получения информации, которую</div>
+    <div style="display: inline-block;">пользолватель вводит в консоль. Например, если мы хотим узнать у пользователя, как его зовут и поприветствовать его.</div>
+<div>Такая программа будет выглядеть так:</div>
+    <div class="block" style="background: #e1e2e6; width: 600px; border: 6px solid #e1e2e6;">
+        <div style="display: inline-block;color: #0095b6">print</div
+        ><div style="display: inline-block;color: #666666">(</div>
+        <div style="display: inline-block;color: #008000">'Как вас зовут?'</div
+        ><div style="display: inline-block;color: #666666">)</div>
+        <div> </div>
+        <div style="display: inline-block;">name = </div
+        ><div style="display: inline-block;color: #008000">input</div
+        ><div style="display: inline-block;color: #666666">()</div>
+        <div> </div>
+        <div style="display: inline-block;color: #0095b6">print</div
+        ><div style="display: inline-block;color: #666666">(</div
+    ><div style="display: inline-block;color: #008000">'Привет, '</div
+    ><div style="display: inline-block;color: #666666">, </div>
+        <div style="display: inline-block;">name</div
+    ><div style="display: inline-block;color: #666666">)</div>
+    </div>
+    <div  style="background: #f7f21a; width: 900px; border: 10px solid #f7f21a; margin-top: 10px">
+        <b>Команда input()</b>
+        <div>Она всегда пишется с круглыми скобками. Команда работает так: когда программа доходит до места, где есть
+            input(), она ждет, пока пользователь введет строку с клавиатуры (ввод завершается нажатием клавиши Enter).
+            Введенная строка подставляется на место input().</div>
+    </div>
+<h2>Переменные</h2>
+<div>Команду name = input() можно считать так: «Подожди, пока пользователь введет какую-то строку и помести введенную строку в переменную name».
+    Попробуем разобраться, что это значит. Переменные имеют имя и значение.</div>
+    <div  style="background: #f7f21a; width: 900px; border: 10px solid #f7f21a; margin-top: 10px">
+        <b>Имя переменной</b>
+        <div>Имя переменной должно отражать ее назначение и может состоять из латинских букв, цифр и символа подчеркивания.
+            Имя не может начинаться с цифры.</div>
+    </div>
+<br>В вышеописанном примере переменная содержит в себе имя пользователя, поэтому мы назвали ее name (имя).
+    Обратите внимание: слово name не подсвечено никаким цветом — в Python это слово ничего не обозначает.
+    Оно что-то значит только в этой программе и только потому, что мы употребили оператор присваивания. При этом
+    интерпретатору совершенно неважно, что значит слово name в английском языке, и мы с тем же успехом могли использовать
+    любое другое имя: например, user («пользователь») или просто n, или даже hello. За имена переменных отвечает программист,
+    то есть вы.</br>
+    <div>Соблюдайте правило: если в переменной хранится приветствие, пусть она так и называется, если имя — пусть она и называется соответственно.</div>
+    <div  style="background: #f7f21a; width: 900px; border: 10px solid #f7f21a; margin-top: 10px">
+        <b>Значение переменной</b>
+        <div>Значение переменной — то, что сохраняет в себе переменная.</div>
+        <p>Знак «=» обозначает команду под названием «оператор присваивания».
+            Оператор присваивания присваивает значение, которое находится справа от знака равно, переменной, которая находится слева от знака равно.</p>
+    </div>
+<div>В нашем случае это то, что поместил в нее пользователь командой input().
+    Это текстовое значение — строка. То есть переменная сохраняет в себе строковое значение.
+    Говорят, что переменная строкового типа.
+</div>
+    <div class="block" style="background: #e1e2e6; width: 600px; border: 6px solid #e1e2e6;">
+        <div style="display: inline-block;">hello = </div>
+        <div style="display: inline-block;color: #008000">'Здравствуйте.'</div>
+        <div> </div>
+        <div>hello2 = hello</div>
+        <div style="display: inline-block;color: #0095b6">print</div
+        ><div style="display: inline-block;color: #666666">(</div
+        ><div style="display: inline-block;">hello2</div
+    ><div style="display: inline-block;color: #666666">)</div>
+        <div> </div>
+        <div>Вывод: Здравствуйте.</div>
+    </div>
+    <div  style="background: #f7f21a; width: 900px; border: 10px solid #f7f21a; margin-top: 10px">
+        <div style="display: inline-block;">Итак, если вы хотите, чтобы у вас была <b style="display: inline-block;">переменная
+            с каким-то именем и каким-то значением</b>, нужно написать на отдельной строчке:</div>
+        <p style="background: #f5f5f5;border: 3px solid #f5f5f5; width: 500px">#имя переменной# = #значение переменной#</p>
+        <div>Как только эта команда выполнится, в программе появится указанная переменная с таким значением.</div>
+        <p>Помните: команды выполняются последовательно, в том же порядке, в котором они написаны.</p>
+    </div>
+    <div  style="background: #f7f21a; width: 900px; border: 10px solid #f7f21a; margin-top: 10px">
+        <b>Комментарии</b>
+        <div> Для удобства можно использовать комментарии, которые позволяют программисту делать для себя пометки в коде
+            или делать часть кода не выполнимой, не видимой для интерпретатора.</div>
+        <p style="display: inline-block;">Если вы начнете строчку со знака решетки <b style="display: inline-block;">#</b>, интерпретатор Python будет игнорировать всю эту строчку.
+            Программа будет выполняться так, как будто строчки нет. Такая строчка называется <b style="display: inline-block;">комментарием</b>.</p>
+    </div>
+    </div>
+</form>
+{% endblock %}

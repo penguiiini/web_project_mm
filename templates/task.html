@@ -22,8 +22,8 @@
                 <pre> {{ i }} </pre>
             {% endfor %}
         </blck>
-        <p> {{ form.send(type="submit", class="btn", style="margin-left: 350px; background: #1c1c1c; color: #f8f8ff;") }} </p>
-        <div class="alert" role="alert" style="background-color: #4c9141;">
+        <div> {{ form.send(type="submit", class="btn", style="margin-left: 350px; background: #1c1c1c; color: #f8f8ff; width: 100px; height: 40px;") }} </div>
+        <div class="alert" role="alert" style="margin-left: 350px; background-color: #4c9141; width: 700px; border: 5px solid #4c9141">
             Решение верное
         </div>
     {% elif check == False %}
@@ -36,8 +36,8 @@
                 <pre> {{ i }} </pre>
             {% endfor %}
         </blck>
-        <p> {{ form.send(type="submit", class="btn btn", style="margin-left: 350px; background: #1c1c1c; color: #f8f8ff;") }} </p>
-        <div class="group" style="background-color: #ff0000;" role="alert">
+        <div> {{ form.send(type="submit", class="btn btn", style="margin-left: 350px; background: #1c1c1c; color: #f8f8ff; width: 100px; height: 40px;") }} </div>
+        <div class="group" style="background-color: #ff0000; margin-left: 350px; width: 700px; border: 5px solid #ff0000; margin-top: 5px" role="alert">
             <pre>Решение неверное</pre>
             <pre>Ошибка:</pre>
             {% for i in error %}
@@ -56,7 +56,7 @@
                 <pre> {{ i }} </pre>
             {% endfor %}
         </blck>
-        <p> {{ form.send(type="submit", class="btn",  style="background: #1c1c1c; color: #f8f8ff; margin-left: 500px") }} </p>
+        <div> {{ form.send(type="submit", class="btn",  style="background: #1c1c1c; color: #f8f8ff; margin-left: 350px; width: 100px; height: 40px;") }} </div>
     {% endif %}
 </form>
 {% endblock %}

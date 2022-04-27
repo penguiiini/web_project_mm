@@ -1,33 +1,39 @@
 {% extends "base.html" %}
 
 {% block aut %}
-<h1>Авторизация</h1>
-<form action="" method="post" novalidate style="background: linear-gradient(to right, #93B874, #C9DCB9); ">
+<h1 style="margin-left: 375px">Авторизация</h1>
+<form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
-    <p>
-        {{ form.username.label }}<br>
-        {{ form.username(class="form-control") }}<br>
-        {% for error in form.username.errors %}
-    <div class="alert alert-danger" role="alert">
-        {{ error }}
+    <div style="margin-left: 375px">
+        <img src="{{url_for('static', filename='img/python-icon1.png')}}"
+             alt="здесь должна была быть картинка, но не нашлась"/>
     </div>
-    {% endfor %}
-    </p>
-    <p>
-        {{ form.password.label }}<br>
-        {{ form.password(class="form-control", type="password") }}<br>
-        {% for error in form.password.errors %}
-    <div class="alert alert-danger" role="alert">
-        {{ error }}
+    <div class="block" style="margin-left: 150px;">
+        <p style="width: 700px">
+            {{ form.username.label }}<br>
+            {{ form.username(class="form-control") }}<br>
+            {% for error in form.username.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        <p style="width: 700px">
+            {{ form.password.label }}<br>
+            {{ form.password(class="form-control", type="password") }}<br>
+            {% for error in form.password.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
+        </p>
+        <p style="display: inline-block;">{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+        <div style="display: inline-block; margin-left:100px;">Еще не зарегестрированы?</div>
+        <div style="display: inline-block; margin-left:100px;">Войти как гость</div>
+        <p> </p>
+        <p style="display: inline-block;">{{ form.submit(type="submit", class="btn btn-warning") }}</p>
+        <p style="display: inline-block; margin-left:160px;">{{ form.reg(type="submit", class="btn btn-danger") }}</p>
+        <p style="display: inline-block; margin-left:140px;">{{ form.guest(type="submit", class="btn btn-danger") }}</p>
     </div>
-    {% endfor %}
-    </p>
-    <p style="display: inline-block;">{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-    <div style="display: inline-block; margin-left:100px;">Еще не зарегестрированы?</div>
-    <div style="display: inline-block; margin-left:100px;">Войти как гость</div>
-    <p> </p>
-    <p style="display: inline-block;">{{ form.submit(type="submit", class="btn btn-warning") }}</p>
-    <p style="display: inline-block; margin-left:160px;">{{ form.reg(type="submit", class="btn btn-danger") }}</p>
-    <p style="display: inline-block; margin-left:140px;">{{ form.guest(type="submit", class="btn btn-danger") }}</p>
 </form>
 {% endblock %}
