@@ -1,0 +1,83 @@
+{% extends "main_window.html" %}
+
+{% block theory1 %}
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>{{ form.back_to_tasks1(class="btn", style="width: 150px; height: 50px; background: #1c1c1c; color: #f8f8ff; cursor: pointer;") }}</p>
+    <p>{{ form.back_to_main1(class="btn", style="width: 150px; height: 50px; background: #1c1c1c; color: #f8f8ff; cursor: pointer;") }}</p>
+    <div style="margin-left: 500px; font-size: 20px;width: 900px;">
+        <h2>Условный оператор</h2>
+        <div style="background: #f7f21a; width: 900px; border: 10px solid #f7f21a">
+            <div>Условный оператор используется, когда некая часть программы должна быть выполнена, только </div
+        ><b>если верно </b
+    ><div>какое-либо условие. Для записи условного оператора используются ключевые слова if и else («если», «иначе»),
+            двоеточие и  отступ в четыре пробела.</div></div>
+        <div class="block" style="background: #e1e2e6; width: 600px; border: 6px solid #e1e2e6; margin-top: 10px">
+            <div style="display: inline-block;color: #0095b6">if </div>
+            <div style="display: inline-block;">условие</div
+        ><div style="display: inline-block;color: #666666">:</div>
+            <div style="white-space: pre;">    Действия, если условия верны</div>
+            <div style="display: inline-block;color: #0095b6">else</div
+            ><div style="display: inline-block;color: #666666">:</div>
+            <div style="white-space: pre;">    Действия,если условия не верны</div>
+        </div>
+        <div>Рассмотрим пример:</div>
+        <div class="block" style="background: #e1e2e6; width: 600px; border: 6px solid #e1e2e6; margin-top: 10px">
+            <div style="display: inline-block;color: #0095b6">print</div
+            ><div style="display: inline-block;color: #666666">(</div
+            ><div style="display: inline-block;color: #008000">'Введите пароль:'</div
+            ><div style="display: inline-block;color: #666666">)</div>
+            <div> </div>
+            <div style="display: inline-block">password = </div>
+            <div style="display: inline-block;color: #008000">input</div
+        ><div style="display: inline-block;color: #666666">()</div>
+            <div> </div>
+            <div style="display: inline-block;color: #0095b6">if </div>
+        <div style="display: inline-block;">password == </div>
+        <div style="display: inline-block;color: #008000">'qwerty'</div
+        ><div style="display: inline-block;color: #666666">:</div>
+            <div></div>
+            <div style="white-space: pre;display: inline-block;color: #0095b6">    print</div
+            ><div style="display: inline-block;color: #666666">(</div
+            ><div style="display: inline-block;color: #008000">'Доступ открыт.'</div
+            ><div style="display: inline-block;color: #666666">)</div>
+            <div> </div>
+            <div style="display: inline-block;color: #0095b6">else </div
+            ><div style="display: inline-block;color: #666666">:</div>
+            <div> </div>
+            <div style="white-space: pre;display: inline-block;color: #0095b6">    print</div
+            ><div style="display: inline-block;color: #666666">(</div
+            ><div style="display: inline-block;color: #008000">'Ошибка, доступ закрыт!'</div
+            ><div style="display: inline-block;color: #666666">)</div>
+        </div>
+        <div>Обратите внимание: в начале условного оператора if выполняется сравнение, а не присваивание. Разница вот в чем.</div>
+        <div style="background: #f7f21a; width: 900px; border: 10px solid #f7f21a">
+            <h3>Сравнение</h3>
+            <div>Сравнение — это проверка, которая не меняет значение переменной (в сравнении может вообще не быть переменных),
+                а присваивание — команда, которая меняет значение переменной.</div>
+            <div>Для сравнения нужно использовать двойной знак равенства: ==.</div>
+            <div>Также заметьте, что после else никогда не пишется никакого условия.</div>
+        </div>
+        <h2>Сложное условие. Логические операции</h2>
+        <div style="display: inline-block;">Иногда в условном операторе нужно задать сложное условие. Для этого можно использовать логические операции
+            <b style="display: inline-block;">and</b> («и»), <b style="display: inline-block;">or</b> («или») и
+            <b style="display: inline-block;">not</b> («не»).</div>
+        <div style="background: #f7f21a; width: 900px; border: 10px solid #f7f21a"> Чтобы задать одновременное выполнение
+            двух условий, используем and («и»), если достаточно выполнения одного из двух вариантов (или обоих сразу) —
+            используем or («или»), а если нужно убрать какой-то вариант — not («не»).</div>
+        <div>Приоритет выполнения операций:</div>
+        <div class="block" style="background: #e1e2e6; width: 600px; border: 6px solid #e1e2e6; margin-top: 10px">
+            <div>1. not</div>
+            <div>2. and</div>
+            <div>3. or</div>
+        </div>
+        <h2>Вложенные условия</h2>
+        <div style="background: #f7f21a; width: 900px; border: 10px solid #f7f21a">
+            <h3>Блок кода</h3>
+            <div>СВ команде if при выполнении условия можно выполнять более одной команды. Для этого все их необходимо
+                выделить отступом. Такая запись называется <i>блоком кода</i>. По отступам интерпретатор определяет, при выполнении
+                каких условий какие команды исполнять. Аналогично можно делать и для команды else.</div>
+    </div>
+    
+</form>
+{% endblock %}
