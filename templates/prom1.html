@@ -5,17 +5,17 @@
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <p>{{ form.back_to_main(type="submit",
-        class="btn", style="background: #1c1c1c; color: #f8f8ff; width: 150px; height: 50px; font-size:15px;") }}</p>
+        class="btn", style="background: #1c1c1c; color: #f8f8ff; width: 150px; height: 50px; font-size:15px; cursor: pointer;") }}</p>
     <div class="group" style="margin-left:500px">
         <p style="display: inline-block;">{{ form.task1(type="submit", class="btn", style="width: 800px; height: 75px;
-            font-size:30px; background: #1c1c1c; color: #f8f8ff;") }}</p>
+            font-size:25px; background: #1c1c1c; color: #f8f8ff; cursor: pointer;") }}</p>
         <p style="display: inline-block;">{{ form.theory(type="submit", class="btn", style="width: 400px; height: 75px;
-            margin-top: 50px; font-size:30px; background: #1c1c1c; color: #f8f8ff;") }}</p>
+            margin-top: 50px; font-size:25px; background: #1c1c1c; color: #f8f8ff; cursor: pointer;") }}</p>
         <p> </p>
         <p>{{ form.task2(type="submit", class="btn", style="width: 800px; height: 75px; background: #1c1c1c; color: #f8f8ff;
-        margin-top: 50px; font-size:30px;") }}</p>
+        margin-top: 50px; font-size:25px; cursor: pointer;") }}</p>
         <p>{{ form.task3(type="submit", class="btn", style="width: 800px; height: 75px; background: #1c1c1c; color: #f8f8ff;
-        margin-top: 50px; font-size:30px;") }}</p>
+        margin-top: 50px; font-size:25px; cursor: pointer;") }}</p>
     </div>
 </form>
 {% endblock %}

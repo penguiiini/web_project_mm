@@ -1,7 +1,7 @@
 {% extends "main_window.html" %}
 
 {% block les1 %}
-<h1></h1>
+<h1 align="center" style="padding-top: 5px;">Задача {{ task_name }}</h1>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <style>
@@ -20,8 +20,8 @@
     padding: 5px; 
     }
     </style>
-    <p>{{ form.back_to_tasks(class="btn", style="width: 150px; height: 50px; background: #1c1c1c; color: #f8f8ff;") }}</p>
-    <p>{{ form.back_to_main(class="btn", style="width: 150px; height: 50px; background: #1c1c1c; color: #f8f8ff;") }}</p>
+    <p>{{ form.back_to_tasks(class="btn", style="width: 150px; height: 50px; background: #1c1c1c; color: #f8f8ff; cursor: pointer;") }}</p>
+    <p>{{ form.back_to_main(class="btn", style="width: 150px; height: 50px; background: #1c1c1c; color: #f8f8ff ; cursor: pointer;") }}</p>
     {% if check == True %}
         <blck>
             {{ form.answer(class="form-control", style="width: 700px; height: 648px;
@@ -100,7 +100,7 @@
             {% endif %}
             </table>
         </blck>
-        <div> {{ form.send(type="submit", class="btn",  style="background: #1c1c1c; color: #f8f8ff; margin-left: 350px; width: 100px; height: 40px;") }} </div>
+        <div> {{ form.send(type="submit", class="btn",  style="background: #1c1c1c; color: #f8f8ff; margin-left: 350px; width: 100px; height: 40px; cursor: pointer;") }} </div>
 
     {% endif %}
 </form>
