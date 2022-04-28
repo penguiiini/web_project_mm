@@ -12,7 +12,6 @@ from sqlalchemy.orm import Session
 import sqlalchemy.ext.declarative as dec
 import sqlite3
 import sys
-from waitress import serve
 
 SqlAlchemyBase = dec.declarative_base()
 
@@ -20,6 +19,7 @@ __factory = None
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'MSilko&MMal'
+
 
 con = sqlite3.connect('data/FlaskProject.db', check_same_thread=False)
 cur = con.cursor()
@@ -989,7 +989,9 @@ def task23():
                            task=['Условие задачи "Лес":', ' ', 'Напишите программу, которая принимает на вход строку,', 'а далее выводит, входит ли подстрока "лес" в данную на ввод строку.', '', 'Пример работы программы:'], inputi='прелестно', outputi='ДА', rows=2, inputi2='рыбина', outputi2='НЕТ', task_name='"Лес"')
 
 
+
+
+
 if __name__ == '__main__':
-    # app.run(port=8080, host='127.0.0.1')
-    serve(app, host='0.0.0.0', port=5000)
+    app.run(port=8080, host='127.0.0.1')
 con.close()
