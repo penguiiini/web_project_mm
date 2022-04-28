@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import os
 import io
 from flask import Flask, render_template, url_for, request, redirect
@@ -300,7 +299,7 @@ def main_window():
         NowUser = False
         return redirect('/authorization')
     return render_template('lessons.html', title='Уроки', form=form, username=username,
-                           correct=correct)
+                           correct=correct, is_guest=User)
 
 
 @app.route('/lessons/les1', methods=['GET', 'POST'])
@@ -329,13 +328,13 @@ def les2():
     if form.task3.data:
         return redirect('/lessons/les2/task3')
     if form.theory.data:
-        return redirect('/lessons/les2/theory1')
+        return redirect('/lessons/les2/theory')
     if form.back_to_main.data:
         return redirect('/lessons')
     return render_template('prom1.html', title='Урок 2', form=form)
 
 
-@app.route('/lessons/les1/theory1', methods=['GET', 'POST'])
+@app.route('/lessons/les1/theory', methods=['GET', 'POST'])
 def theory1():
     form = Theory()
     if form.back_to_tasks1.data:
@@ -412,8 +411,8 @@ def task11():
     form.answer.data = answer
     con.commit()
     return render_template('task.html', title='Уроки', form=form, check=check2, error=error, answer=user_answer,
-    exanswer=right_answer,
-    task=['Условие задачи "Привет, world!":', ' ', 'Напишите программу, которая выводит "Hello, world!"'])
+                           exanswer=right_answer,
+                           task=['Условие задачи "Привет, world!":', ' ', 'Напишите программу, которая выводит "Hello, world!".'], rows=0)
 
 
 @app.route('/lessons/les1/task2', methods=['GET', 'POST'])
@@ -553,6 +552,16 @@ def task13():
     return render_template('task.html', title='Уроки', form=form, check=check2, error=error, answer=user_answer,
                            exanswer=right_answer,
                            task=['Условие задачи "Обратный порядок":', ' ', 'Напишите программу, которая принимает на вход 4 строки,', 'а затем выводит их в обратном порядке. Помните, что каждая', 'новая строчка выводится одной новой командой <print()>.', '', 'Пример работы программы:'], inputi='A\nB\nC\nD', outputi='D\nC\nB\nA', rows=2, inputi2='1\n2\n3\n4', outputi2='4\n3\n2\n1')
+
+
+@app.route('/lessons/les2/theory', methods=['GET', 'POST'])
+def theory2():
+    form = Theory()
+    if form.back_to_tasks1.data:
+        return redirect('/lessons/les2')
+    if form.back_to_main1.data:
+        return redirect('/lessons')
+    return render_template('theory2.html', form=form, title='Урок 2: условный оператор')
 
 
 if __name__ == '__main__':
