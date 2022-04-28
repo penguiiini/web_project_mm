@@ -74,10 +74,73 @@
         <h2>Вложенные условия</h2>
         <div style="background: #f7f21a; width: 900px; border: 10px solid #f7f21a">
             <h3>Блок кода</h3>
-            <div>СВ команде if при выполнении условия можно выполнять более одной команды. Для этого все их необходимо
-                выделить отступом. Такая запись называется <i>блоком кода</i>. По отступам интерпретатор определяет, при выполнении
-                каких условий какие команды исполнять. Аналогично можно делать и для команды else.</div>
-    </div>
-    
+            <div style="display: inline-block;">В команде if при выполнении условия можно выполнять более одной команды. Для этого все их необходимо
+                выделить отступом. Такая запись называется <i style="display: inline-block;">блоком кода</i>. По отступам интерпретатор определяет, при выполнении
+                каких условий какие команды исполнять. Аналогично можно делать и для команды else.</div></div>
+        <h2>Типы данных</h2>
+        <div>Пока единственным типом данных, с которым мы работали, были строки. Теперь нам предстоит рассмотреть целые
+            и вещественные числа. У каждого элемента данных, который встречается в программе, есть свой тип.
+            (В случае с Python более правильный термин — «класс объекта», но об этом мы будем говорить гораздо позже).</div>
+        <div>Например, «привет» — это строка, а вот 15.3 — это число (дробное). Даже если данные не записаны прямо в
+            программе, а получаются откуда-то еще, у них есть совершенно определенный тип. Например, на место input()
+            всегда подставляется строка, а 2 + 2 даст именно число 4, а не строку "4".</div>
+        <div>Пользователь может ввести с клавиатуры какие-то цифры, но в результате input() вернет строку, состоящую из
+            этих цифр. Если мы попытаемся, например, прибавить к этой строке 1, получим ошибку.</div>
+        <div>А если нам надо работать с числами? Мы пока будем рассматривать целые и вещественные числа.</div>
+        <div style="background: #f7f21a; width: 900px; border: 10px solid #f7f21a">
+            <div style="display: inline-block;">Когда речь идет о числовых данных, они записываются без <b style="display: inline-block;">кавычек.</b></div>
+                <div> </div>
+                <div style="display: inline-block;">А для вещественных чисел, чтобы отделить дробную часть от целой, используют <b style="display: inline-block;">точку.</b></div>
+        </div>
+        <h2>Целочисленное деление</h2>
+        <div style="background: #f7f21a; width: 900px; border: 10px solid #f7f21a">
+            Для реализации целочисленного деления существуют два действия: деление нацело и остаток от деления нацело.
+            Получение целой части от деления обозначается как удвоенный знак деления, а остатка от деления нацело — %.
+        </div>
+        <h2>Простейшие функции</h2>
+        <div style="display: inline-block;">С действиями над числами определились, осталось разобраться, как получать числа из ввода. Здесь нам поможет
+            важное новое понятие — <b style="display: inline-block;">функция</b>. В математике функция из одного числа (или даже нескольких) делает другое.</div>
+        <div style="background: #f7f21a; width: 900px; border: 10px solid #f7f21a">
+            <h3>Функция</h3>
+            <div>В программировании (и в Python, в частности) функция — это сущность, которая из одного (или даже нескольких)
+                значений делает другое. При этом она может еще и выполнять какие-то действия.</div>
+
+            <div>Например, есть функция модуля у = |x|, аналогично в Python есть функция y = abs(x).</div>
+
+            <div>Но функции в Python необязательно принимают только числа.</div>
+        </div>
+        <div>Для того чтобы вводить числа с клавиатуры и потом работать с ними, необходимо найти функцию, которая из строки делает число. И такие функции есть!</div>
+        <div style="background: #f7f21a; width: 900px; border: 10px solid #f7f21a">
+            <div style="display: inline-block;">Тип данных целых чисел в Python называется <b style="display: inline-block;">int</b>,
+                дробных чисел — <b style="display: inline-block;">float</b>.</div>
+            <div> </div>
+            <div>Одноименные функции принимают в качестве аргумента строку и возвращают число, если в этой строке было записано число (иначе выдают ошибку):</div>
+        </div>
+        <div class="block" style="background: #e1e2e6; width: 600px; border: 6px solid #e1e2e6; margin-top: 10px">
+            <div style="display: inline-block;">a = </div>
+            <div style="display: inline-block;color: #008000">input</div
+            ><div style="display: inline-block;color: #666666">()</div>
+            <div> </div>
+            <div style="display: inline-block;">b = </div>
+            <div style="display: inline-block;color: #008000">int</div
+                ><div style="display: inline-block;color: #666666">(</div
+        ><div style="display: inline-block;">a</div
+        ><div style="display: inline-block;color: #666666">)</div>
+            <div> </div>
+            <div style="display: inline-block;color: #0095b6">print</div
+            ><div style="display: inline-block;color: #666666">(</div
+            ><div style="display: inline-block;">b + 1</div
+        ><div style="display: inline-block;color: #666666">)</div>
+        </div>
+        <div>Или так:</div>
+        <div class="block" style="background: #e1e2e6; width: 600px; border: 6px solid #e1e2e6; margin-top: 10px">
+            <div style="display: inline-block;">a = </div>
+            <div style="display: inline-block;color: #008000">int</div
+                ><div style="display: inline-block;color: #666666">(</div
+            ><div style="display: inline-block;color: #008000">input</div
+            ><div style="display: inline-block;color: #666666">())</div>
+        </div>
+        <div>что будет означать — «получи строку из ввода, сделай из нее целое число и результат помести в переменную а».</div>
+        </div>
 </form>
 {% endblock %}
