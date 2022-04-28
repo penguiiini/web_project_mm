@@ -8,16 +8,27 @@
 </header>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
+
     <p style="display: inline-block;">{{ form.lesson1(type="submit", class="b", style="background: #1c1c1c; width: 800px; height: 85px;
         font-size:30px; color: #f8f8ff; margin-left: 500px; cursor: pointer; ") }}</p>
     <div class="group" style="display: inline-block; font-size:25px; margin-left: 100px">
         <div>Привет, {{ username }}!</div>
         <div style="background: #4c9141"> Правильно решено задач: {{ correct }}</div>
     </div>
+    <div> </div>
+    {% if is_guest == 'Guest' %}
+    <b style="display: inline-block; font-size: 20px; background: #ff1f1f; border: 5px solid #ff1f1f">Вам, как гостю, доступен только 1 урок</b>
+    <p style="display: inline-block;">{{ form.lesson2(type="submit", class="b", style="background: #1c1c1c; width: 800px; height: 85px;
+        font-size:30px; color: #f8f8ff; margin-left: 133px ") }}</p>
+    <p style="display: inline-block;">
+        {{ form.exit(type="submit", class="b", style="background: #1c1c1c; color: #f8f8ff; width: 150px; height: 50px; font-size:15px; margin-left: 100px; cursor: pointer;") }}
+    </p>
+    {% else %}
     <p style="display: inline-block;">{{ form.lesson2(type="submit", class="b", style="background: #1c1c1c; width: 800px; height: 85px;
         font-size:30px; color: #f8f8ff; margin-left: 500px ") }}</p>
     <p style="display: inline-block;">
         {{ form.exit(type="submit", class="b", style="background: #1c1c1c; color: #f8f8ff; width: 150px; height: 50px; font-size:15px; margin-left: 100px; cursor: pointer;") }}
     </p>
+    {% endif %}
 </form>
 {% endblock %}
