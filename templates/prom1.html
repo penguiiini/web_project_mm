@@ -1,7 +1,7 @@
 {% extends "main_window.html" %}
 
 {% block prom1 %}
-<h1> </h1>
+<h1 align="center" style="padding-top: 5px;">{{ title }}</h1>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <p>{{ form.back_to_main(type="submit",
