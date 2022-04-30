@@ -1,0 +1,5 @@
+email-validator: version - 1.1.3
+WTForms: v - 3.0.1
+Jinja: v - 3.0.2
+Flask-WTF: v - 1.0.0
+Flask: v - 2.0.3
