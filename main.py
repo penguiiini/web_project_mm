@@ -23,7 +23,8 @@ User = ''
 
 def save_answer(lesson, num, answer, user, ball):
     cur.execute(
-        f'''INSERT INTO Answers (lesson, num, user, answer, ball) VALUES ({lesson}, {num}, "{user}", "{answer}", {ball})''')
+        f'''INSERT INTO Answers (lesson, num, user, answer, ball) VALUES ({lesson}, {num}, "{user}",
+         "{answer}", {ball})''')
     con.commit()
 
 
@@ -98,12 +99,13 @@ def test1_1(answer):
 
     out, exc = None, None
 
+    # noinspection PyBroadException
     try:
         if not ('import os' in answer or 'os.system(' in answer or 'subprocess' in answer):
             exec(answer)
         else:
             return '', 'Нельзя импортировать модули "os" и "subprocess"!'
-    except:
+    except Exception:
 
         import traceback
         exc = traceback.format_exc()
@@ -131,12 +133,13 @@ def test1_2(answer):
         f = io.StringIO(i)
         sys.stdin = f
 
+        # noinspection PyBroadException
         try:
             if not ('import os' in answer or 'os.system(' in answer or 'subprocess' in answer):
                 exec(answer)
             else:
                 return ra, None, 'Нельзя импортировать модули "os" и "subprocess"!', ''
-        except:
+        except Exception:
             import traceback
             exc = traceback.format_exc()
             return ra, out, exc, count
@@ -174,12 +177,13 @@ def test1_3(answer):
         f1 = sys.stdin
         f = open(i, 'r')
         sys.stdin = f
+        # noinspection PyBroadException
         try:
             if not ('import os' in answer or 'os.system(' in answer or 'subprocess' in answer):
                 exec(answer)
             else:
                 return ra, None, 'Нельзя импортировать модули "os" и "subprocess"!', ''
-        except:
+        except Exception:
             import traceback
             exc = traceback.format_exc()
             return ra, out, exc, count
@@ -208,7 +212,6 @@ def test2_1(answer):
         if '' in spis:
             spis = spis[:spis.index('')]
 
-        ra = ''
         if spis[0] == spis[1]:
             ra = 'Пароли совпадают'
         else:
@@ -222,12 +225,13 @@ def test2_1(answer):
         f1 = sys.stdin
         f = open(i, 'r')
         sys.stdin = f
+        # noinspection PyBroadException
         try:
             if not ('import os' in answer or 'os.system(' in answer or 'subprocess' in answer):
                 exec(answer)
             else:
                 return ra, None, 'Нельзя импортировать модули "os" и "subprocess"!', ''
-        except:
+        except Exception:
             import traceback
             exc = traceback.format_exc()
             return ra, out, exc, count
@@ -237,9 +241,10 @@ def test2_1(answer):
         sys.stdin = f1
         sys.stdout = old_out
 
+        # noinspection PyBroadException
         try:
             out = out.split('\n')[:-1][0]
-        except:
+        except Exception:
             return ra, out, 'Сбой в тесте №', count
 
         if ra != out:
@@ -270,12 +275,13 @@ def test2_2(answer):
         f1 = sys.stdin
         f = open(i, 'r')
         sys.stdin = f
+        # noinspection PyBroadException
         try:
             if not ('import os' in answer or 'os.system(' in answer or 'subprocess' in answer):
                 exec(answer)
             else:
                 return ra, None, 'Нельзя импортировать модули "os" и "subprocess"!', ''
-        except:
+        except Exception:
             import traceback
             exc = traceback.format_exc()
             return ra, out, exc, count
@@ -285,9 +291,10 @@ def test2_2(answer):
         sys.stdin = f1
         sys.stdout = old_out
 
+        # noinspection PyBroadException
         try:
             out = out.split('\n')[:-1][0]
-        except:
+        except Exception:
             return ra, out, 'Сбой в тесте №', count
 
         if ra != out:
@@ -318,12 +325,13 @@ def test2_3(answer):
         f1 = sys.stdin
         f = open(i, 'r')
         sys.stdin = f
+        # noinspection PyBroadException
         try:
             if not ('import os' in answer or 'os.system(' in answer or 'subprocess' in answer):
                 exec(answer)
             else:
                 return ra, None, 'Нельзя импортировать модули "os" и "subprocess"!', ''
-        except:
+        except Exception:
             import traceback
             exc = traceback.format_exc()
             return ra, out, exc, count
@@ -332,10 +340,10 @@ def test2_3(answer):
         f.close()
         sys.stdin = f1
         sys.stdout = old_out
-
+        # noinspection PyBroadException
         try:
             out = out.split('\n')[:-1][0]
-        except:
+        except Exception:
             return ra, out, 'Сбой в тесте №', count
 
         if ra != out:
@@ -472,12 +480,13 @@ def main_window():
     if User == 'Guest':
         form.exit.label.text = 'Войти в аккаунт'
     if not NowUser:
+        # noinspection PyBroadException
         try:
             pas = cur.execute('''SELECT login, complete FROM Users WHERE login = 
     (SELECT userlogin FROM Lastuser WHERE id = 1)''').fetchall()
             username, correct = pas[0][0], pas[0][1]
             User = username
-        except:
+        except Exception:
             User = 'Guest'
             username = 'Гость'
             correct = '-'
@@ -559,9 +568,11 @@ def task11():
     right_answer = ''
     answer = ''
     plus = False
+    # noinspection PyBroadException
     try:
         pas = cur.execute(
-            f'''SELECT answer, ball FROM Answers WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''').fetchall()
+            f'''SELECT answer, ball FROM Answers WHERE user = "{User}" AND lesson = {lesson}
+             AND num = {num}''').fetchall()
         answer = pas[0][0]
         ball1 = pas[0][1]
         ra = cur.execute(
@@ -571,12 +582,12 @@ def task11():
         error = check1[1].split('\n')
         user_answer = check1[2]
         right_answer = ra[0][0]
-        if check2 == True and ball1 != 1:
+        if check2 and ball1 != 1:
             plus = True
             cur.execute(f'''UPDATE Answers SET ball = 1 WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''')
         if ball1 == 1:
             plus = True
-    except:
+    except Exception:
         pass
     if form.send.data:
         answer = request.form.get('answer')
@@ -587,7 +598,7 @@ def task11():
         error = check1[1].split('\n')
         user_answer = check1[2]
         right_answer = ra[0][0]
-        if check2 == True:
+        if check2:
             ball = 1
         else:
             ball = 0
@@ -599,7 +610,8 @@ def task11():
                         save_answer(lesson, num, answer, User, ball)
                     else:
                         cur.execute(
-                            f'''UPDATE Answers SET answer = "{answer}" WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''')
+                            f'''UPDATE Answers SET answer = "{answer}" WHERE user = "{User}"
+                             AND lesson = {lesson} AND num = {num}''')
             else:
                 save_answer(lesson, num, answer, User, ball)
     if form.back_to_tasks.data:
@@ -607,15 +619,16 @@ def task11():
     if form.back_to_main.data:
         return redirect('/lessons')
 
-    if plus == False:
+    if not plus:
+        # noinspection PyBroadException
         try:
             pas = cur.execute(f'''SELECT login, complete FROM Users WHERE login = "{User}"''').fetchall()
             username, correct = pas[0][0], pas[0][1]
-            if check2 == True:
+            if check2:
                 cur.execute(f'''UPDATE Users
                     SET complete = {int(correct) + 1}
                     WHERE login = "{User}"''')
-        except:
+        except Exception:
             pass
     form.answer.data = answer
     con.commit()
@@ -639,9 +652,11 @@ def task12():
     right_answer = ''
     answer = ''
     plus = False
+    # noinspection PyBroadException
     try:
         pas = cur.execute(
-            f'''SELECT answer, ball FROM Answers WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''').fetchall()
+            f'''SELECT answer, ball FROM Answers WHERE user = "{User}" AND lesson = {lesson}
+             AND num = {num}''').fetchall()
         answer = pas[0][0]
         ball1 = pas[0][1]
         check1 = check1_23(answer, 2)
@@ -649,12 +664,12 @@ def task12():
         error = check1[1].split('\n')
         user_answer = check1[2]
         right_answer = check1[3]
-        if check2 == True and ball1 != 1:
+        if check2 and ball1 != 1:
             plus = True
             cur.execute(f'''UPDATE Answers SET ball = 1 WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''')
         if ball1 == 1:
             plus = True
-    except:
+    except Exception:
         pass
     if form.send.data:
         answer = request.form.get('answer')
@@ -663,7 +678,7 @@ def task12():
         error = check1[1].split('\n')
         user_answer = check1[2]
         right_answer = check1[3]
-        if check2 == True:
+        if check2:
             ball = 1
         else:
             ball = 0
@@ -675,7 +690,8 @@ def task12():
                         save_answer(lesson, num, answer, User, ball)
                     else:
                         cur.execute(
-                            f'''UPDATE Answers SET answer = "{answer}" WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''')
+                            f'''UPDATE Answers SET answer = "{answer}" WHERE user = "{User}" AND 
+                            lesson = {lesson} AND num = {num}''')
             else:
                 save_answer(lesson, num, answer, User, ball)
     if form.back_to_tasks.data:
@@ -683,15 +699,16 @@ def task12():
     if form.back_to_main.data:
         return redirect('/lessons')
 
-    if plus == False:
+    if plus:
+        # noinspection PyBroadException
         try:
             pas = cur.execute(f'''SELECT login, complete FROM Users WHERE login = "{User}"''').fetchall()
             username, correct = pas[0][0], pas[0][1]
-            if check2 == True:
+            if check2:
                 cur.execute(f'''UPDATE Users
                 SET complete = {int(correct) + 1}
                 WHERE login = "{User}"''')
-        except:
+        except Exception:
             pass
     form.answer.data = answer
     con.commit()
@@ -718,9 +735,11 @@ def task13():
     answer = ''
     plus = False
 
+    # noinspection PyBroadException
     try:
         pas = cur.execute(
-            f'''SELECT answer, ball FROM Answers WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''').fetchall()
+            f'''SELECT answer, ball FROM Answers WHERE user = "{User}" AND lesson = {lesson}
+             AND num = {num}''').fetchall()
         answer = pas[0][0]
         ball1 = pas[0][1]
         check1 = check1_23(answer, 3)
@@ -728,12 +747,12 @@ def task13():
         error = check1[1].split('\n')
         user_answer = check1[2]
         right_answer = check1[3]
-        if check2 == True and ball1 != 1:
+        if check2 and ball1 != 1:
             plus = True
             cur.execute(f'''UPDATE Answers SET ball = 1 WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''')
         if ball1 == 1:
             plus = True
-    except:
+    except Exception:
         pass
 
     if form.send.data:
@@ -744,7 +763,7 @@ def task13():
         user_answer = check1[2]
         right_answer = check1[3]
 
-        if check2 == True:
+        if check2:
             ball = 1
         else:
             ball = 0
@@ -756,7 +775,8 @@ def task13():
                         save_answer(lesson, num, answer, User, ball)
                     else:
                         cur.execute(
-                            f'''UPDATE Answers SET answer = "{answer}" WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''')
+                            f'''UPDATE Answers SET answer = "{answer}" WHERE user = "{User}" AND
+                             lesson = {lesson} AND num = {num}''')
             else:
                 save_answer(lesson, num, answer, User, ball)
 
@@ -765,15 +785,16 @@ def task13():
     if form.back_to_main.data:
         return redirect('/lessons')
 
-    if plus == False:
+    if plus:
+        # noinspection PyBroadException
         try:
             pas = cur.execute(f'''SELECT login, complete FROM Users WHERE login = "{User}"''').fetchall()
             username, correct = pas[0][0], pas[0][1]
-            if check2 == True:
+            if check2:
                 cur.execute(f'''UPDATE Users
                 SET complete = {int(correct) + 1}
                 WHERE login = "{User}"''')
-        except:
+        except Exception:
             pass
     form.answer.data = answer
     con.commit()
@@ -800,10 +821,11 @@ def task21():
     right_answer = ''
     answer = ''
     plus = False
-
+    # noinspection PyBroadException
     try:
         pas = cur.execute(
-            f'''SELECT answer, ball FROM Answers WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''').fetchall()
+            f'''SELECT answer, ball FROM Answers WHERE user = "{User}" AND lesson = {lesson}
+             AND num = {num}''').fetchall()
         answer = pas[0][0]
         ball1 = pas[0][1]
         check1 = check2_1(answer, 1)
@@ -811,12 +833,12 @@ def task21():
         error = check1[1].split('\n')
         user_answer = check1[2]
         right_answer = check1[3]
-        if check2 == True and ball1 != 1:
+        if check2 and ball1 != 1:
             plus = True
             cur.execute(f'''UPDATE Answers SET ball = 1 WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''')
         if ball1 == 1:
             plus = True
-    except:
+    except Exception:
         pass
 
     if form.send.data:
@@ -827,7 +849,7 @@ def task21():
         user_answer = check1[2]
         right_answer = check1[3]
 
-        if check2 == True:
+        if check2:
             ball = 1
         else:
             ball = 0
@@ -839,7 +861,8 @@ def task21():
                         save_answer(lesson, num, answer, User, ball)
                     else:
                         cur.execute(
-                            f'''UPDATE Answers SET answer = "{answer}" WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''')
+                            f'''UPDATE Answers SET answer = "{answer}" WHERE user = "{User}" AND
+                             lesson = {lesson} AND num = {num}''')
             else:
                 save_answer(lesson, num, answer, User, ball)
 
@@ -848,15 +871,16 @@ def task21():
     if form.back_to_main.data:
         return redirect('/lessons')
 
-    if plus == False:
+    if not plus:
+        # noinspection PyBroadException
         try:
             pas = cur.execute(f'''SELECT login, complete FROM Users WHERE login = "{User}"''').fetchall()
             username, correct = pas[0][0], pas[0][1]
-            if check2 == True:
+            if check2:
                 cur.execute(f'''UPDATE Users
                 SET complete = {int(correct) + 1}
                 WHERE login = "{User}"''')
-        except:
+        except Exception:
             pass
     form.answer.data = answer
     con.commit()
@@ -886,9 +910,11 @@ def task22():
     answer = ''
     plus = False
 
+    # noinspection PyBroadException
     try:
         pas = cur.execute(
-            f'''SELECT answer, ball FROM Answers WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''').fetchall()
+            f'''SELECT answer, ball FROM Answers WHERE user = "{User}" AND lesson = {lesson}
+             AND num = {num}''').fetchall()
         answer = pas[0][0]
         ball1 = pas[0][1]
         check1 = check2_1(answer, 2)
@@ -896,12 +922,12 @@ def task22():
         error = check1[1].split('\n')
         user_answer = check1[2]
         right_answer = check1[3]
-        if check2 == True and ball1 != 1:
+        if check2 and ball1 != 1:
             plus = True
             cur.execute(f'''UPDATE Answers SET ball = 1 WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''')
         if ball1 == 1:
             plus = True
-    except:
+    except Exception:
         pass
 
     if form.send.data:
@@ -912,7 +938,7 @@ def task22():
         user_answer = check1[2]
         right_answer = check1[3]
 
-        if check2 == True:
+        if check2:
             ball = 1
         else:
             ball = 0
@@ -924,7 +950,8 @@ def task22():
                         save_answer(lesson, num, answer, User, ball)
                     else:
                         cur.execute(
-                            f'''UPDATE Answers SET answer = "{answer}" WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''')
+                            f'''UPDATE Answers SET answer = "{answer}" WHERE user = "{User}"
+                             AND lesson = {lesson} AND num = {num}''')
             else:
                 save_answer(lesson, num, answer, User, ball)
 
@@ -933,15 +960,16 @@ def task22():
     if form.back_to_main.data:
         return redirect('/lessons')
 
-    if plus == False:
+    if not plus:
+        # noinspection PyBroadException
         try:
             pas = cur.execute(f'''SELECT login, complete FROM Users WHERE login = "{User}"''').fetchall()
             username, correct = pas[0][0], pas[0][1]
-            if check2 == True:
+            if not check2:
                 cur.execute(f'''UPDATE Users
                 SET complete = {int(correct) + 1}
                 WHERE login = "{User}"''')
-        except:
+        except Exception:
             pass
     form.answer.data = answer
     con.commit()
@@ -968,9 +996,11 @@ def task23():
     answer = ''
     plus = False
 
+    # noinspection PyBroadException
     try:
         pas = cur.execute(
-            f'''SELECT answer, ball FROM Answers WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''').fetchall()
+            f'''SELECT answer, ball FROM Answers WHERE user = "{User}" AND lesson = {lesson}
+             AND num = {num}''').fetchall()
         answer = pas[0][0]
         ball1 = pas[0][1]
         check1 = check2_1(answer, 3)
@@ -978,12 +1008,12 @@ def task23():
         error = check1[1].split('\n')
         user_answer = check1[2]
         right_answer = check1[3]
-        if check2 == True and ball1 != 1:
+        if check2 and ball1 != 1:
             plus = True
             cur.execute(f'''UPDATE Answers SET ball = 1 WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''')
         if ball1 == 1:
             plus = True
-    except:
+    except Exception:
         pass
 
     if form.send.data:
@@ -994,7 +1024,7 @@ def task23():
         user_answer = check1[2]
         right_answer = check1[3]
 
-        if check2 == True:
+        if check2:
             ball = 1
         else:
             ball = 0
@@ -1006,7 +1036,8 @@ def task23():
                         save_answer(lesson, num, answer, User, ball)
                     else:
                         cur.execute(
-                            f'''UPDATE Answers SET answer = "{answer}" WHERE user = "{User}" AND lesson = {lesson} AND num = {num}''')
+                            f'''UPDATE Answers SET answer = "{answer}" WHERE user = "{User}"
+                             AND lesson = {lesson} AND num = {num}''')
             else:
                 save_answer(lesson, num, answer, User, ball)
 
@@ -1015,15 +1046,16 @@ def task23():
     if form.back_to_main.data:
         return redirect('/lessons')
 
-    if plus == False:
+    if not plus:
+        # noinspection PyBroadException
         try:
             pas = cur.execute(f'''SELECT login, complete FROM Users WHERE login = "{User}"''').fetchall()
             username, correct = pas[0][0], pas[0][1]
-            if check2 == True:
+            if check2:
                 cur.execute(f'''UPDATE Users
                 SET complete = {int(correct) + 1}
                 WHERE login = "{User}"''')
-        except:
+        except Exception:
             pass
     form.answer.data = answer
     con.commit()
