@@ -47,7 +47,7 @@ class Authorization(FlaskForm):
                                                    Length(min=4, max=16, message="Неверный пароль")])
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
-    reg = SubmitField('Зарегестрироваться')
+    reg = SubmitField('Зарегистрироваться')
     guest = SubmitField('Войти как гость')
 
 
