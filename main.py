@@ -6,14 +6,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, EmailField, SubmitField, BooleanField, Label, TextAreaField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, AnyOf, NoneOf, ValidationError
 import email_validator
-import sqlalchemy as sa
-import sqlalchemy.orm as orm
-from sqlalchemy.orm import Session
-import sqlalchemy.ext.declarative as dec
 import sqlite3
 import sys
 
-SqlAlchemyBase = dec.declarative_base()
 
 __factory = None
 
