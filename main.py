@@ -39,6 +39,7 @@ class Registraiton(FlaskForm):
                                                                            EqualTo('password',
                                                                                    "Пароли должны совпадать")])
     submit = SubmitField('Создать аккаунт')
+    back = SubmitField('Авторизироваться')
 
 
 class Authorization(FlaskForm):
@@ -407,6 +408,7 @@ def check2_1(answer, task_num):
             return False, exc, out, right_answer
 
 
+@app.route('/registration', methods=['GET', 'POST'])
 def registration():
     form = Registraiton()
     if request.method == 'POST' and form.validate_on_submit():
