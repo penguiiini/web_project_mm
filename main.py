@@ -407,26 +407,27 @@ def check2_1(answer, task_num):
             return False, exc, out, right_answer
 
 
-@app.route('/registration', methods=['GET', 'POST'])
 def registration():
     form = Registraiton()
     if request.method == 'POST' and form.validate_on_submit():
-        connect = False
-        username = request.form.get('username')
-        password = request.form.get('password')
-        email = str(request.form.get('email'))
-        users = cur.execute('''SELECT login FROM Users''').fetchall()
-        print(users)
-        a = (username,)
-        print(a)
-        if a not in users:
-            connect = True
-        if connect:
-            registration1(username, password, email)
-            return redirect("/authorization")
-        else:
-            flash('Пользователь с таким логином уже существует!', category='error')
-
+        if form.submit.data:
+            connect = False
+            username = request.form.get('username')
+            password = request.form.get('password')
+            email = str(request.form.get('email'))
+            users = cur.execute('''SELECT login FROM Users''').fetchall()
+            print(users)
+            a = (username,)
+            print(a)
+            if a not in users:
+                connect = True
+            if connect:
+                registration1(username, password, email)
+                return redirect("/authorization")
+            else:
+                flash('Пользователь с таким логином уже существует!', category='error')
+    if form.back.data:
+        redirect('/authorization')
     return render_template('login.html', title='Регистрация', form=form, )
 
 
